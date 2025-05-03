@@ -110,9 +110,8 @@ export const CalendarClient = ({ item }: Props) => {
                   const diferencaMinutos =
                     (hoje.getTime() - horarioDisponivel.getTime()) /
                     (1000 * 60);
-                  desabilitadoPorTempo = diferencaMinutos > 10;
+                  desabilitadoPorTempo = diferencaMinutos > 5;
                 }
-
                 const desabilitado = ocupado || desabilitadoPorTempo;
 
                 return (
@@ -126,9 +125,9 @@ export const CalendarClient = ({ item }: Props) => {
                       </Button>
                     ) : (
                       <DialogAppointments
-                        hours={horario}
-                        date={date?.toLocaleDateString()}
-                        item={item}
+                        reserved_hours={horario}
+                        reserved_date={date?.toLocaleDateString()}
+                        services={item}
                       >
                         <Button className="w-full">{horario}</Button>
                       </DialogAppointments>

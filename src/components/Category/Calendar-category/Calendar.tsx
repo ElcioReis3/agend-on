@@ -51,10 +51,6 @@ export function CalendarApp() {
         }}
         className="w-full max-w-min rounded-md border shadow px-5 "
       />
-      <div>
-        <h3 className="font-semibold">Calendário Cliente</h3>
-        <CalendarClient />
-      </div>
     </div>
   );
 }

@@ -27,6 +27,7 @@ export const TableServices = () => {
       const list = await getServices();
       setServices(list);
     };
+
     handleList();
   }, [setServices]);
 
@@ -37,7 +38,7 @@ export const TableServices = () => {
         title: "OK!",
         description: response.data.message,
       });
-      setServices([...response.data.servicesList]);
+      setServices(response.data.servicesList);
     } catch (error: any) {
       console.log(error);
       toast({
@@ -64,26 +65,28 @@ export const TableServices = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {services.map((service) => (
-            <TableRow key={service.id}>
-              <TableCell className="font-medium">{service.title}</TableCell>
-              <TableCell>{service.description}</TableCell>
-              <TableCell>{service.temp}min</TableCell>
-              <TableCell>
-                {" "}
-                {service.price.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </TableCell>
-              <TableCell className="flex gap-1">
-                <DialogConfirm confirm={() => handleDeleteService(service.id)}>
-                  <Trash className="cursor-pointer" />
-                </DialogConfirm>
-                <SquarePen />
-              </TableCell>
-            </TableRow>
-          ))}
+          {services &&
+            services.map((service) => (
+              <TableRow key={service.id}>
+                <TableCell className="font-medium">{service.title}</TableCell>
+                <TableCell>{service.description}</TableCell>
+                <TableCell>{service.temp}min</TableCell>
+                <TableCell>
+                  {service.price.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </TableCell>
+                <TableCell className="flex gap-1">
+                  <DialogConfirm
+                    confirm={() => handleDeleteService(service.id)}
+                  >
+                    <Trash className="cursor-pointer" />
+                  </DialogConfirm>
+                  <SquarePen />
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

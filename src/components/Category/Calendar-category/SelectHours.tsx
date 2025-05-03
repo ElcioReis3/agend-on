@@ -92,7 +92,7 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
   return (
     <>
       <div className="flex flex-col gap-1">
-        <div className="w-full max-w-md flex gap-1 items-center justify-between">
+        <div className="w-full max-w-md flex gap-1 items-center">
           <Label className="w-14">Manhã:</Label>
           <Input
             type="time"
@@ -145,7 +145,7 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
           </Label>
         </div>
       </div>
-      <div className="flex flex-col gap-1 items-center">
+      <div className="flex flex-col gap-1">
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <Label htmlFor="intervalo" className="text-sm">
