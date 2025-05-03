@@ -5,17 +5,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AlertCircle, LucideLink } from "lucide-react";
+import { LucideLink } from "lucide-react";
 import "@flaticon/flaticon-uicons/css/all/all.css";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
+import { Location } from "@/components/location";
 
 export default function Page() {
   return (
     <>
       <Header />
       <div className="w-full h-32 flex justify-center items-center text-xl">
-        <div>Sobre nós</div>
+        <div className="font-semibold">Sobre nós</div>
       </div>
       <div className="w-full max-w-3xl m-auto px-3 mb-32">
         <Accordion type="single" collapsible className="w-full">
@@ -82,6 +83,9 @@ export default function Page() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+      </div>
+      <div>
+        <Location />
       </div>
       <Footer />
     </>

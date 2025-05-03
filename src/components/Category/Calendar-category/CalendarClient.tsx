@@ -96,25 +96,44 @@ export const CalendarClient = ({ item }: Props) => {
 
               {horariosDisponiveis.map((horario) => {
                 const ocupado = horariosOcupados.includes(horario);
+
+                const hoje = new Date();
+                const mesmaData =
+                  date && hoje.toDateString() === new Date(date).toDateString();
+
+                let desabilitadoPorTempo = false;
+                if (mesmaData) {
+                  const [horaDisp, minutoDisp] = horario.split(":").map(Number);
+                  const horarioDisponivel = new Date();
+                  horarioDisponivel.setHours(horaDisp, minutoDisp, 0, 0);
+
+                  const diferencaMinutos =
+                    (hoje.getTime() - horarioDisponivel.getTime()) /
+                    (1000 * 60);
+                  desabilitadoPorTempo = diferencaMinutos > 10;
+                }
+
+                const desabilitado = ocupado || desabilitadoPorTempo;
+
                 return (
-                  <DialogAppointments
-                    key={horario}
-                    hours={horario}
-                    date={date?.toLocaleDateString()}
-                    item={item}
-                  >
-                    <Button
-                      key={horario}
-                      disabled={ocupado}
-                      className={
-                        ocupado
-                          ? " bg-gray-400 text-gray-600 cursor-not-allowed"
-                          : "w-full"
-                      }
-                    >
-                      {horario}
-                    </Button>
-                  </DialogAppointments>
+                  <div key={horario}>
+                    {desabilitado ? (
+                      <Button
+                        disabled
+                        className="bg-gray-400 text-gray-600 cursor-not-allowed w-full"
+                      >
+                        {horario}
+                      </Button>
+                    ) : (
+                      <DialogAppointments
+                        hours={horario}
+                        date={date?.toLocaleDateString()}
+                        item={item}
+                      >
+                        <Button className="w-full">{horario}</Button>
+                      </DialogAppointments>
+                    )}
+                  </div>
                 );
               })}
             </div>

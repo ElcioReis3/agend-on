@@ -12,12 +12,17 @@ interface Service {
 interface ServiceStore {
   services: Service[];
   setServices: (services: Service[]) => void;
+  addService: (newService: Service) => void;
   clearServices: () => void;
 }
 
 const useServiceStore = create<ServiceStore>((set) => ({
   services: [],
   setServices: (services) => set({ services }),
+  addService: (newService) =>
+    set((state) => ({
+      services: [...state.services, newService],
+    })),
   clearServices: () => set({ services: [] }),
 }));
 

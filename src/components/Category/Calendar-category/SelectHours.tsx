@@ -17,11 +17,13 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
   const { addAvailability } = useAvailabilityStore();
   const { toast } = useToast();
   const [morningStart, setMorningStart] = React.useState("08:00");
-  const [morningEnd, setMorningEnd] = React.useState("11:50");
+  const [morningEnd, setMorningEnd] = React.useState("12:00");
   const [afternoonStart, setAfternoonStart] = React.useState("14:00");
-  const [afternoonEnd, setAfternoonEnd] = React.useState("17:50");
+  const [afternoonEnd, setAfternoonEnd] = React.useState("18:00");
   const [includeMorning, setIncludeMorning] = React.useState(true);
   const [includeAfternoon, setIncludeAfternoon] = React.useState(true);
+  const [intervaloMinutos, setIntervaloMinutos] = React.useState(30);
+  const [bufferMinutos, setBufferMinutos] = React.useState(10);
 
   async function gerarDisponibilidades() {
     if (!dateRange?.from || !dateRange?.to) {
@@ -35,10 +37,24 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
       const horarios: string[] = [];
 
       if (includeMorning) {
-        horarios.push(...generateHours(morningStart, morningEnd, 30, 10));
+        horarios.push(
+          ...generateHours(
+            morningStart,
+            morningEnd,
+            intervaloMinutos,
+            bufferMinutos
+          )
+        );
       }
       if (includeAfternoon) {
-        horarios.push(...generateHours(afternoonStart, afternoonEnd, 30, 10));
+        horarios.push(
+          ...generateHours(
+            afternoonStart,
+            afternoonEnd,
+            intervaloMinutos,
+            bufferMinutos
+          )
+        );
       }
 
       const dataFormatada = new Date(d).toISOString().split("T")[0];
@@ -75,61 +91,89 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
 
   return (
     <>
-      <div className="w-full max-w-md flex gap-2 items-center justify-evenly">
-        <Label>Manhã Início:</Label>
-        <Input
-          type="time"
-          value={morningStart}
-          onChange={(e) => setMorningStart(e.target.value)}
-          disabled={!includeMorning}
-          className="w-min"
-        />
-        <Label>Manhã Fim:</Label>
-        <Input
-          type="time"
-          value={morningEnd}
-          onChange={(e) => setMorningEnd(e.target.value)}
-          disabled={!includeMorning}
-          className="w-min"
-        />
-        <Label className="flex items-center gap-2">
+      <div className="flex flex-col gap-1">
+        <div className="w-full max-w-md flex gap-1 items-center justify-between">
+          <Label className="w-14">Manhã:</Label>
           <Input
-            type="checkbox"
-            checked={includeMorning}
-            onChange={() => setIncludeMorning(!includeMorning)}
-            className="w-4"
+            type="time"
+            value={morningStart}
+            onChange={(e) => setMorningStart(e.target.value)}
+            disabled={!includeMorning}
+            className="w-min"
           />
-          Incluir Manhã
-        </Label>
-      </div>
-      <div className="w-full max-w-md flex gap-2 items-center justify-evenly">
-        <Label>Tarde Início:</Label>
-        <Input
-          type="time"
-          value={afternoonStart}
-          onChange={(e) => setAfternoonStart(e.target.value)}
-          disabled={!includeAfternoon}
-          className="w-min"
-        />
-        <Label>Tarde Fim:</Label>
-        <Input
-          type="time"
-          value={afternoonEnd}
-          onChange={(e) => setAfternoonEnd(e.target.value)}
-          disabled={!includeAfternoon}
-          className="w-min"
-        />
-        <Label className="flex items-center gap-2">
           <Input
-            type="checkbox"
-            checked={includeAfternoon}
-            onChange={() => setIncludeAfternoon(!includeAfternoon)}
-            className="w-4"
+            type="time"
+            value={morningEnd}
+            onChange={(e) => setMorningEnd(e.target.value)}
+            disabled={!includeMorning}
+            className="w-min"
           />
-          Incluir Tarde
-        </Label>
+          <Label className="flex items-center gap-1">
+            <Input
+              type="checkbox"
+              checked={includeMorning}
+              onChange={() => setIncludeMorning(!includeMorning)}
+              className="w-4"
+            />
+            Incluir Manhã
+          </Label>
+        </div>
+        <div className="w-full max-w-md flex gap-1 items-center">
+          <Label className="w-14">Tarde:</Label>
+          <Input
+            type="time"
+            value={afternoonStart}
+            onChange={(e) => setAfternoonStart(e.target.value)}
+            disabled={!includeAfternoon}
+            className="w-min"
+          />
+          <Input
+            type="time"
+            value={afternoonEnd}
+            onChange={(e) => setAfternoonEnd(e.target.value)}
+            disabled={!includeAfternoon}
+            className="w-min"
+          />
+          <Label className="flex items-center gap-1">
+            <Input
+              type="checkbox"
+              checked={includeAfternoon}
+              onChange={() => setIncludeAfternoon(!includeAfternoon)}
+              className="w-4"
+            />
+            Incluir Tarde
+          </Label>
+        </div>
       </div>
-      <div className="flex gap-4 items-center">
+      <div className="flex flex-col gap-1 items-center">
+        <div className="flex gap-4">
+          <div className="flex items-center gap-2">
+            <Label htmlFor="intervalo" className="text-sm">
+              Intervalo (min):
+            </Label>
+            <Input
+              id="intervalo"
+              type="number"
+              min={1}
+              value={intervaloMinutos}
+              onChange={(e) => setIntervaloMinutos(Number(e.target.value))}
+              className="w-16"
+            />
+          </div>
+          <div className="flex items-center justify-start gap-2">
+            <Label htmlFor="buffer" className="text-sm">
+              Intervalo extra (min):
+            </Label>
+            <Input
+              id="buffer"
+              type="number"
+              min={0}
+              value={bufferMinutos}
+              onChange={(e) => setBufferMinutos(Number(e.target.value))}
+              className="w-16"
+            />
+          </div>
+        </div>
         <div className="flex gap-1">
           <Button
             onClick={gerarDisponibilidades}

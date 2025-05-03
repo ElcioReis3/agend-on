@@ -24,8 +24,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/services/api";
 import useServiceStore from "@/stores/serviceStore";
-import { ServiceType } from "@/types/servicesType";
-import { getServices } from "@/services/getServices";
 
 type Props = {
   children: React.ReactNode;
@@ -46,16 +44,7 @@ const formSchema = z.object({
 
 export const DialogAddServices = ({ children }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { setServices } = useServiceStore((state) => state);
-
-  useEffect(() => {
-    getServicesApi();
-  }, [setServices]);
-
-  const getServicesApi = async () => {
-    const servicesData: ServiceType[] = await getServices();
-    setServices(servicesData);
-  };
+  const { addService } = useServiceStore((state) => state);
 
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -76,7 +65,7 @@ export const DialogAddServices = ({ children }: Props) => {
           title: `OK!`,
           description: response.data.message,
         });
-        getServicesApi();
+        addService(response.data.newService);
         setIsOpen(false);
       }
     } catch (error: any) {

@@ -13,8 +13,7 @@ import useServiceStore from "@/stores/serviceStore";
 import { useEffect } from "react";
 
 const Page = () => {
-  const services = useServiceStore((state) => state.services);
-  const setServices = useServiceStore((state) => state.setServices);
+  const { services, setServices } = useServiceStore((state) => state);
 
   useEffect(() => {
     const handleList = async () => {
@@ -25,7 +24,7 @@ const Page = () => {
   }, [setServices]);
 
   return (
-    <div className="w-full flex flex-col justify-center items-center my-7">
+    <div className="w-full max-w-5xl grid grid-cols-3 gap-2 justify-center items-center my-7 m-auto p-3">
       {services.length === 0 && (
         <div className="h-96 flex justify-center items-center">
           <div className="animate-pulse">
@@ -36,7 +35,7 @@ const Page = () => {
       {services.map((item) => (
         <fieldset
           key={item.id}
-          className="w-full max-w-xl border-2 rounded-xl p-3"
+          className="w-full h-min max-w-xl border-2 rounded-xl p-3"
         >
           <legend className="px-3 font-bold text-greenMark text-xl">
             {item.title}

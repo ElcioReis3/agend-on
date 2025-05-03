@@ -13,12 +13,22 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/services/api";
+import { getServices } from "@/services/getServices";
 import useServiceStore from "@/stores/serviceStore";
 import { SquarePen, Trash } from "lucide-react";
+import { useEffect } from "react";
 
 export const TableServices = () => {
   const { services, setServices } = useServiceStore((state) => state);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const handleList = async () => {
+      const list = await getServices();
+      setServices(list);
+    };
+    handleList();
+  }, [setServices]);
 
   const handleDeleteService = async (id: string) => {
     try {
@@ -27,7 +37,7 @@ export const TableServices = () => {
         title: "OK!",
         description: response.data.message,
       });
-      setServices(response.data.servicesList);
+      setServices([...response.data.servicesList]);
     } catch (error: any) {
       console.log(error);
       toast({
