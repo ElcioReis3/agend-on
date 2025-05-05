@@ -16,7 +16,7 @@ import useUserStore from "@/stores/userStore";
 import api from "@/services/api";
 import { FormattedDate } from "@/services/formattedDate";
 import { Separator } from "../ui/separator";
-import { DialogCancelPlan } from "./dialog-cancel-plan";
+import { DialogCancelPlan } from "./Dialog-cancel-plan";
 
 type Props = {
   children: React.ReactNode;

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/services/api";
-import { getServices } from "@/services/getServices";
+import { getServices } from "@/services/getApi";
 import useServiceStore from "@/stores/serviceStore";
 import { SquarePen, Trash } from "lucide-react";
 import { useEffect } from "react";

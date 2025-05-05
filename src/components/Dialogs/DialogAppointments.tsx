@@ -7,13 +7,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
 import { ServiceType } from "@/types/servicesType";
 import api from "@/services/api";
 import useUserStore from "@/stores/userStore";
-import { CustomerType } from "@/types/customerType";
 import { useToast } from "@/hooks/use-toast";
-import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useState } from "react";
 
@@ -22,6 +19,7 @@ type Props = {
   reserved_date?: string;
   reserved_hours?: string;
   services?: ServiceType;
+  onSuccess?: () => void;
 };
 
 export const DialogAppointments = ({
@@ -33,6 +31,7 @@ export const DialogAppointments = ({
   const [observation, setObservation] = useState("");
   const { toast } = useToast();
   const { user } = useUserStore((state) => state);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleConfirm = async (
     id_user: string | undefined,
@@ -51,14 +50,15 @@ export const DialogAppointments = ({
       });
       if (response.status === 200) {
         toast({
-          title: "Deu certo",
+          title: "Agendamento concluído com sucesso!",
         });
+        setIsOpen(false);
       }
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="w-full h-full">{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>

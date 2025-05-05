@@ -8,7 +8,7 @@ import {
   TableFooter,
   TableRow,
 } from "@/components/ui/table";
-import { getServices } from "@/services/getServices";
+import { getServices } from "@/services/getApi";
 import useServiceStore from "@/stores/serviceStore";
 import { useEffect } from "react";
 
@@ -24,41 +24,45 @@ const Page = () => {
   }, [setServices]);
 
   return (
-    <div className="w-full max-w-5xl grid sm:grid-cols-1 md:grid-cols-3 gap-2 justify-center items-center my-7 m-auto p-3">
+    <div className="w-full max-w-7xl mx-auto grid gap-4 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {services.length === 0 && (
-        <div className="h-96 flex justify-center items-center">
-          <div className="animate-pulse">
+        <div className="col-span-full h-96 flex justify-center items-center">
+          <div className="animate-pulse text-center text-muted-foreground">
             Nenhum serviço disponível no momento.
           </div>
         </div>
       )}
+
       {services.map((item) => (
         <fieldset
           key={item.id}
-          className="w-full h-min max-w-xl border-2 rounded-xl p-3 m-auto"
+          className="w-full h-full max-w-80 border-2 rounded-xl p-4 flex flex-col justify-between m-auto"
         >
-          <legend className="px-3 font-bold text-greenMark text-xl">
+          <legend className="px-3 font-bold text-greenMark text-lg sm:text-xl">
             {item.title}
           </legend>
-          <Table className="max-w-xl m-auto font-semibold">
+
+          <Table className="w-full font-semibold border-separate border-spacing-0">
             <TableBody>
-              <TableRow>
-                <TableCell>{item.description}</TableCell>
-                <TableCell className="text-right text-muted-foreground">
-                  {item.temp}
-                  {" min"}
+              <TableRow className="p-1">
+                <TableCell className="p-1 text-sm">
+                  {item.description.toLocaleUpperCase()}
+                </TableCell>
+                <TableCell className="p-1 text-right text-muted-foreground text-sm">
+                  {item.temp} min
                 </TableCell>
               </TableRow>
-              <TableRow>
-                <TableCell>Valor</TableCell>
-                <TableCell className="text-right text-colorMark">
+              <TableRow className="p-1">
+                <TableCell className="p-1 text-sm">Valor</TableCell>
+                <TableCell className="p-1 text-right text-colorMark text-sm">
                   R$ {item.price.toFixed(2)}
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
+
           <DialogTerms item={item}>
-            <Button className="w-full">
+            <Button className="w-full mt-2 text-sm sm:text-base">
               Agendar por R${(item.price / 2).toFixed(2)}
             </Button>
           </DialogTerms>

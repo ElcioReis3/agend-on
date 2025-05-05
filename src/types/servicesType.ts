@@ -5,4 +5,5 @@ export type ServiceType = {
   temp: number;
   price: number;
   clas?: string;
+  status?: "reserved" | "completed" | "canceled";
 };

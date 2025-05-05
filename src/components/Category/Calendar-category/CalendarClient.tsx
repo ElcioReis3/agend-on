@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useAvailabilityStore } from "@/stores/useAvailabilityStore";
-import api from "@/services/api";
 import { DialogAppointments } from "@/components/Dialogs/DialogAppointments";
 import { ServiceType } from "@/types/servicesType";
+import { getAvailables } from "@/services/getApi";
 
 type Props = {
   item?: ServiceType;
@@ -27,11 +27,11 @@ export const CalendarClient = ({ item }: Props) => {
 
   useEffect(() => {
     const handleList = async () => {
-      const response = await api.get("list-availables");
-      setAvailabilities(response.data);
+      const list = await getAvailables();
+      setAvailabilities(list);
     };
     handleList();
-  }, [setAvailabilities]);
+  }, [setAvailabilities, setOpenModal]);
 
   const handleDateSelect = async (selectedDate: Date | undefined) => {
     setOpenModal(true);
@@ -47,7 +47,6 @@ export const CalendarClient = ({ item }: Props) => {
     setHorariosOcupados(ocupados);
   };
 
-  // Extrai os horários disponíveis da data selecionada
   const horariosDisponiveis = React.useMemo(() => {
     const dataFormatada = date?.toISOString().split("T")[0];
     const diaDisponivel = availabilities.find((a) => a.date === dataFormatada);
@@ -59,7 +58,7 @@ export const CalendarClient = ({ item }: Props) => {
       <Calendar
         mode="single"
         selected={date}
-        onSelect={handleDateSelect}
+        onSelect={() => handleDateSelect(date)}
         disabled={(date) => {
           const today = new Date();
           today.setHours(0, 0, 0, 0);

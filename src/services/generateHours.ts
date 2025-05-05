@@ -1,3 +1,5 @@
+import { getAppointments } from "@/services/getApi";
+import { AppointmentsType } from "@/types/appointmentType";
 export function generateHours(
   start: string,
   end: string,
@@ -26,14 +28,21 @@ export function generateHours(
 }
 
 export async function buscarHorariosOcupados(data: Date) {
-  const dataFormatada = data.toISOString().split("T")[0];
-  const respostaFake: Record<string, string[]> = {
-    "2025-04-29": ["08:00", "09:20", "14:00"],
-    "2025-04-30": ["08:00", "14:00"],
-  };
+  const dataFormatada = data.toLocaleDateString("pt-BR");
+  const agendamentos = await getAppointments();
+  const horariosOcupados: string[] = [];
 
-  // Simula chamada à API
-  return respostaFake[dataFormatada] || [];
+  agendamentos.forEach((agendamento: AppointmentsType) => {
+    if (agendamento.reserved_date === dataFormatada) {
+      agendamento.services.forEach((service: any) => {
+        if (Array.isArray(service.reserved_hours)) {
+          horariosOcupados.push(...service.reserved_hours);
+        }
+      });
+    }
+  });
+
+  return horariosOcupados;
 }
 
 /* 
