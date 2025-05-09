@@ -11,7 +11,7 @@ export type AppointmentsType = {
     clas: "MASTER" | "OPTIONAL";
     reserved_hours: string[];
     due_date: string[] | Date[];
-    status: "reserved" | "completed" | "canceled";
+    status: "reserved" | "completed" | "canceled" | "reprice";
   }[];
   reserved_date: string;
   created_at?: string;

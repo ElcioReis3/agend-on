@@ -81,43 +81,43 @@ export const DialogTerms = ({ children, item }: Props) => {
                   : "Continue para selecionar a data e horário."
               }`}
             </DialogDescription>
-            {!isOpen && (
-              <>
-                <div className="items-top flex space-x-2 text-left">
-                  <Checkbox
-                    id="terms1"
-                    checked={isChecked}
-                    onCheckedChange={handleCheckboxChange}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <label
-                      htmlFor="terms1"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Aceite os termos e condições
-                    </label>
-                    <AccordionTerms />
-                    <p className="text-sm text-muted-foreground">
-                      Você concorda com nossos Termos de Serviço e Política de
-                      Privacidade.
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  className="w-full"
-                  onClick={handleCalendar}
-                  disabled={!isChecked}
-                >
-                  Continuar
-                </Button>
-              </>
-            )}
-            {isOpen && (
-              <div className="w-min m-auto my-7">
-                <CalendarClient item={item} />
-              </div>
-            )}
           </DialogHeader>
+          {!isOpen && (
+            <>
+              <div className="items-top flex space-x-2 text-left">
+                <Checkbox
+                  id="terms1"
+                  checked={isChecked}
+                  onCheckedChange={handleCheckboxChange}
+                />
+                <div className="grid gap-1.5 leading-none">
+                  <label
+                    htmlFor="terms1"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Aceite os termos e condições
+                  </label>
+                  <AccordionTerms />
+                  <p className="text-sm text-muted-foreground">
+                    Você concorda com nossos Termos de Serviço e Política de
+                    Privacidade.
+                  </p>
+                </div>
+              </div>
+              <Button
+                className="w-full"
+                onClick={handleCalendar}
+                disabled={!isChecked}
+              >
+                Continuar
+              </Button>
+            </>
+          )}
+          {isOpen && (
+            <div className="w-min m-auto my-7">
+              <CalendarClient item={item} />
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>

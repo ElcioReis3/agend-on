@@ -58,7 +58,7 @@ export const CalendarClient = ({ item }: Props) => {
       <Calendar
         mode="single"
         selected={date}
-        onSelect={() => handleDateSelect(date)}
+        onSelect={handleDateSelect}
         disabled={(date) => {
           const today = new Date();
           today.setHours(0, 0, 0, 0);

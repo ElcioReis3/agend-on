@@ -90,10 +90,10 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
   }
 
   return (
-    <>
-      <div className="flex flex-col gap-1">
-        <div className="w-full max-w-md flex gap-1 items-center">
-          <Label className="w-14">Manhã:</Label>
+    <div className="flex gap-1 flex-col md:flex-row m-auto">
+      <div className="w-80 flex gap-2 border p-3 rounded-md justify-around">
+        <div className="text-center flex flex-col gap-1 items-center">
+          <Label>Manhã:</Label>
           <Input
             type="time"
             value={morningStart}
@@ -118,8 +118,8 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
             Incluir Manhã
           </Label>
         </div>
-        <div className="w-full max-w-md flex gap-1 items-center">
-          <Label className="w-14">Tarde:</Label>
+        <div className="text-center flex flex-col gap-1 items-center">
+          <Label>Tarde:</Label>
           <Input
             type="time"
             value={afternoonStart}
@@ -145,12 +145,13 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
           </Label>
         </div>
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="flex gap-4">
-          <div className="flex items-center gap-2">
-            <Label htmlFor="intervalo" className="text-sm">
-              Intervalo (min):
-            </Label>
+      <div className="w-full max-w-80 flex flex-col gap-1 border p-3 rounded-md">
+        <div className="flex gap-1">
+          <Label
+            htmlFor="intervalo"
+            className="flex items-center gap-2 text-xs"
+          >
+            Intervalo (min):
             <Input
               id="intervalo"
               type="number"
@@ -159,11 +160,9 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
               onChange={(e) => setIntervaloMinutos(Number(e.target.value))}
               className="w-16"
             />
-          </div>
-          <div className="flex items-center justify-start gap-2">
-            <Label htmlFor="buffer" className="text-sm">
-              Intervalo extra (min):
-            </Label>
+          </Label>
+          <Label htmlFor="buffer" className="flex items-center gap-2 text-xs">
+            Intervalo extra (min):
             <Input
               id="buffer"
               type="number"
@@ -172,9 +171,9 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
               onChange={(e) => setBufferMinutos(Number(e.target.value))}
               className="w-16"
             />
-          </div>
+          </Label>
         </div>
-        <div className="flex gap-1">
+        <div className="w-full flex flex-col gap-1">
           <Button
             onClick={gerarDisponibilidades}
             disabled={!includeMorning && !includeAfternoon}
@@ -184,6 +183,6 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
           <Button variant="outline">Bloquear data</Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
