@@ -28,6 +28,7 @@ export const CalendarClient = ({ item }: Props) => {
   useEffect(() => {
     const handleList = async () => {
       const list = await getAvailables();
+      console.log("lista", list);
       setAvailabilities(list);
     };
     handleList();
@@ -59,6 +60,7 @@ export const CalendarClient = ({ item }: Props) => {
         mode="single"
         selected={date}
         onSelect={handleDateSelect}
+        onDayClick={handleDateSelect}
         disabled={(date) => {
           const today = new Date();
           today.setHours(0, 0, 0, 0);

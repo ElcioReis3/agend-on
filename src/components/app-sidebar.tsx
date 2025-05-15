@@ -63,7 +63,6 @@ export function AppSidebar({ onChangePage, currentPage }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {/*  Menu principal */}
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.page}>
@@ -81,8 +80,6 @@ export function AppSidebar({ onChangePage, currentPage }: AppSidebarProps) {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-
-        {/*  Seção de Configurações e Ajuda */}
         <SidebarMenu className="mt-auto">
           <SidebarMenuItem>
             <SidebarMenuButton onClick={() => onChangePage("settings")}>

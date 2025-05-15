@@ -9,7 +9,7 @@ interface User {
   phone: string;
   role: "USER" | "ADMIN";
   dueDate?: string;
-  reserved_data?: string[];
+  reserved_date?: string[];
   create_at?: string;
   update_at?: string;
   subscriptionDate?: string;

@@ -59,10 +59,10 @@ export default function Layout() {
                 {pages[currentPage]}
               </div>
             </div>
+            <Footer />
           </div>
         </div>
       </SidebarProvider>
-      <Footer />
     </>
   );
 }

@@ -64,7 +64,9 @@ export const DialogTerms = ({ children, item }: Props) => {
           if (!open) setIsOpen(false);
         }}
       >
-        <DialogTrigger className="w-full">{children}</DialogTrigger>
+        <DialogTrigger className="w-full" asChild>
+          {children}
+        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>

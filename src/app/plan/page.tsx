@@ -24,7 +24,7 @@ const Page = () => {
   }, [setServices]);
 
   return (
-    <div className="w-full max-w-7xl mx-auto grid gap-4 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="w-full max-w-7xl min-h-96 mx-auto grid gap-4 p-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {services.length === 0 && (
         <div className="col-span-full h-96 flex justify-center items-center">
           <div className="animate-pulse text-center text-muted-foreground">
@@ -36,7 +36,7 @@ const Page = () => {
       {services.map((item) => (
         <fieldset
           key={item.id}
-          className="w-full h-full max-w-80 border-2 rounded-xl p-4 flex flex-col justify-between m-auto"
+          className="w-full h-min max-w-80 border-2 rounded-xl p-4 flex flex-col justify-between m-auto"
         >
           <legend className="px-3 font-bold text-greenMark text-lg sm:text-xl">
             {item.title}

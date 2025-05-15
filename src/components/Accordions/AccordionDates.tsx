@@ -46,7 +46,7 @@ export function AccordionDates() {
               <AccordionTrigger>{dates.date}</AccordionTrigger>
               <AccordionContent className="grid grid-cols-5 gap-1">
                 {dates.availableHours.map((it) => (
-                  <span className="text-xs p-1 bg-green-300 rounded-md">
+                  <span className="text-xs p-1 bg-green-300 rounded-md text-black">
                     {it}
                   </span>
                 ))}

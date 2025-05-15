@@ -6,7 +6,11 @@ interface Service {
   description: string;
   temp: number;
   price: number;
+  reserved_hours: string[];
+  due_date: string[];
   clas?: string;
+  status?: "reserved" | "completed" | "canceled" | "reprice";
+  observation?: string;
 }
 
 interface ServiceStore {

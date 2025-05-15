@@ -12,7 +12,9 @@ import api from "@/services/api";
 import useUserStore from "@/stores/userStore";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "../ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAvailables } from "@/services/getApi";
+import { buscarHorariosOcupados } from "@/services/generateHours";
 
 type Props = {
   children: React.ReactNode;

@@ -49,7 +49,7 @@ export const TableServices = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-96">
       <DialogAddServices>
         <Button>Adicionar Serviços</Button>
       </DialogAddServices>

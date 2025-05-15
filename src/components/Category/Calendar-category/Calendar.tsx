@@ -26,7 +26,7 @@ export function CalendarApp() {
           return comparingDate < today;
         }}
       />
-      <div>
+      <div className="max-w-96 m-auto">
         <AccordionDates />
       </div>
     </div>

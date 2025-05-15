@@ -1,15 +1,53 @@
-import api from "@/services/api";
+import { StatusAppointments } from "@/app/plan/list-appointments/statusAppointments";
+import { useLoadAppointments } from "@/hooks/useLoadAppointments";
+import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import useUserStore from "@/stores/userStore";
-import { FormattedDate } from "@/services/formattedDate";
+import Link from "next/link";
 
 export const UserPlan = () => {
+  useLoadAppointments();
+
   const { user } = useUserStore((state) => state);
+  const { appointments } = useAppointmentsStore();
+
+  if (user?.role !== "USER") return null;
 
   return (
-    <span className="flex flex-col">
-      {user?.role === "USER" && (
+    <div className="flex flex-col ">
+      <div className="flex justify-between">
         <span className="text-gray-700 font-bold">Agendamentos</span>
+        <Link
+          className="text-sm underline text-muted-foreground"
+          href={"plan/list-appointments"}
+        >
+          Ver lista
+        </Link>
+      </div>
+      {appointments.length === 0 ? (
+        <span className="text-gray-500 text-sm">
+          Nenhum agendamento encontrado.
+        </span>
+      ) : (
+        appointments.map((agendamento) => (
+          <div
+            key={agendamento.id}
+            className="text-sm text-gray-700 h-52 overflow-y-auto"
+          >
+            <div className="border rounded-md p-1">
+              <div className="font-semibold">{agendamento.reserved_date}</div>
+              {agendamento.services.map((service) => (
+                <div className="flex gap-1 items-center">
+                  <StatusAppointments service={service} onText={false} />
+                  <div className="bg-green-300 rounded-md">
+                    {service.reserved_hours}
+                  </div>
+                  <div>{service.title}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
       )}
-    </span>
+    </div>
   );
 };

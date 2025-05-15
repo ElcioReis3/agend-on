@@ -12,7 +12,7 @@ interface Appointment {
     price: number;
     clas: "MASTER" | "OPTIONAL";
     reserved_hours: string[];
-    due_date: string[] | Date[];
+    due_date: string[];
     status: "reserved" | "completed" | "canceled" | "reprice";
   }[];
   reserved_date: string;

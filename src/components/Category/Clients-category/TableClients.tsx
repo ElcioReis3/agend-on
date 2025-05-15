@@ -24,7 +24,7 @@ export const TableClients = () => {
   }, [setClients]);
 
   return (
-    <div>
+    <div className="min-h-96">
       <RefreshCwIcon
         className="cursor-pointer text-muted-foreground active:animate-spin"
         onClick={handleListClients}
@@ -34,14 +34,14 @@ export const TableClients = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Nome</TableHead>
-            <TableHead>Endereço</TableHead>
             <TableHead>E-mail</TableHead>
+            <TableHead>Endereço</TableHead>
             <TableHead className="text-right">Telefone</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {clients.map((client) => (
-            <TableRow>
+            <TableRow key={client.id}>
               <TableCell className="font-medium">
                 {client.name.split(" ").slice(0, 2).join(" ")}
               </TableCell>
