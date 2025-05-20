@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "../ui/checkbox";
 import { useState } from "react";
-import api from "@/services/api";
 import useUserStore from "@/stores/userStore";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -33,7 +32,7 @@ export const DialogTerms = ({ children, item }: Props) => {
   };
 
   const handlePayment = async (title: string, price: number, desc: string) => {
-    if (user?.role !== "ADMIN") {
+    if (user?.role === "ADMIN") {
       toast({
         variant: "destructive",
         autoFocus: true,

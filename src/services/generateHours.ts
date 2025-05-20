@@ -1,5 +1,6 @@
 import { getAppointments } from "@/services/getApi";
 import { AppointmentsType } from "@/types/appointmentType";
+import { AvailabilityType } from "@/types/availabilityType";
 export function generateHours(
   start: string,
   end: string,
@@ -43,6 +44,26 @@ export async function buscarHorariosOcupados(data: Date) {
   });
 
   return horariosOcupados;
+}
+export function filterAvailables(
+  availables: AvailabilityType[]
+): AvailabilityType[] {
+  const now = new Date();
+  const todayStr = now.toISOString().split("T")[0]; // Ex: '2025-05-16'
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  return availables.map((day) => {
+    if (day.date === todayStr) {
+      const filteredHours = day.availableHours.filter((hour) => {
+        const [h, m] = hour.split(":").map(Number);
+        const hourInMinutes = h * 60 + m;
+        return hourInMinutes > currentMinutes;
+      });
+      return { ...day, availableHours: filteredHours };
+    }
+
+    return day;
+  });
 }
 
 /* 

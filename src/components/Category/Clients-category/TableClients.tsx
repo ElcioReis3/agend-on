@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getUsers } from "@/services/getUser";
+import { getUsers } from "@/services/getApi";
 import useClientsStore from "@/stores/useClientsStore";
 import { RefreshCwIcon } from "lucide-react";
 import { useEffect } from "react";

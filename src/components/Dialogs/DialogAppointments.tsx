@@ -8,13 +8,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { ServiceType } from "@/types/servicesType";
-import api from "@/services/api";
 import useUserStore from "@/stores/userStore";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "../ui/textarea";
-import { useEffect, useState } from "react";
-import { getAvailables } from "@/services/getApi";
-import { buscarHorariosOcupados } from "@/services/generateHours";
+import { useState } from "react";
+import { paymentCheckout } from "@/services/payments";
 
 type Props = {
   children: React.ReactNode;
@@ -42,6 +40,34 @@ export const DialogAppointments = ({
     services: ServiceType,
     observation: string
   ) => {
+    if (!id_user || !reserved_date || !reserved_hours || !services) return;
+
+    try {
+      const response = await paymentCheckout(
+        id_user,
+        services,
+        reserved_date,
+        reserved_hours
+      );
+
+      if (response.status === 200 && response.data.url) {
+        window.open(response.data.url, "_blank");
+      } else {
+        toast({ title: "Erro ao redirecionar para o pagamento" });
+      }
+    } catch (error) {
+      console.error("Erro ao criar preferência de pagamento:", error);
+      toast({ title: "Erro ao iniciar pagamento" });
+    }
+  };
+
+  /* const handleConfirm = async (
+    id_user: string | undefined,
+    reserved_date: string,
+    reserved_hours: string,
+    services: ServiceType,
+    observation: string
+  ) => {
     if (id_user && reserved_date && reserved_hours && services) {
       const response = await api.post("add-agend", {
         id_user,
@@ -57,7 +83,7 @@ export const DialogAppointments = ({
         setIsOpen(false);
       }
     }
-  };
+  }; */
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -99,7 +125,7 @@ export const DialogAppointments = ({
                 )
               }
             >
-              Confirmar Agendamento
+              Efetuar o pagamento
             </Button>
           )}
         </div>

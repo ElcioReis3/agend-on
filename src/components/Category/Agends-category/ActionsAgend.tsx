@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { UserDateTimePicker } from "@/components/Users/UserDateTimePicker";
 import { useToast } from "@/hooks/use-toast";
+import { filterAvailables } from "@/services/generateHours";
 import { getAvailables } from "@/services/getApi";
 import { putCanceled, putCompleted, putRescheduled } from "@/services/putApi";
 import useUserStore from "@/stores/userStore";
@@ -32,6 +33,8 @@ export const ActionsAgend = ({ children, item, userBtn }: Props) => {
   const [selectedHour, setSelectedHour] = useState<string>("");
   const { user } = useUserStore((state) => state);
   const [isOpen, setIsOpen] = useState(false);
+  const myHour = availables.map((available) => available.availableHours);
+  console.log(myHour);
 
   useEffect(() => {
     const fetchAvailables = async () => {
@@ -97,26 +100,38 @@ export const ActionsAgend = ({ children, item, userBtn }: Props) => {
               <Button onClick={() => setIsOpen(true)}>Atendido</Button>
             </DialogConfirm>
           )}
-          <DialogConfirm
-            confirm={handleEdit}
-            contentArea={
-              <UserDateTimePicker
-                availables={availables}
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-                setSelectedHour={setSelectedHour}
-              />
-            }
-          >
-            <Button onClick={() => setIsOpen(true)} variant="outline">
-              Reagendar
+          {new Date(item.services[0].due_date[0]) > new Date() ? (
+            <DialogConfirm
+              confirm={handleEdit}
+              contentArea={
+                <UserDateTimePicker
+                  availables={filterAvailables(availables)}
+                  selectedDate={selectedDate}
+                  setSelectedDate={setSelectedDate}
+                  setSelectedHour={setSelectedHour}
+                />
+              }
+            >
+              <Button onClick={() => setIsOpen(true)} variant="outline">
+                Reagendar
+              </Button>
+            </DialogConfirm>
+          ) : (
+            <Button variant="outline" disabled>
+              Reagendar indisponível
             </Button>
-          </DialogConfirm>
-          <DialogConfirm confirm={handleCanceled}>
-            <Button onClick={() => setIsOpen(true)} variant="destructive">
-              Cancelar
+          )}
+          {new Date(item.services[0].due_date[0]) > new Date() ? (
+            <DialogConfirm confirm={handleCanceled}>
+              <Button onClick={() => setIsOpen(true)} variant="destructive">
+                Cancelar
+              </Button>
+            </DialogConfirm>
+          ) : (
+            <Button variant="destructive" disabled>
+              Cancelar indisponível
             </Button>
-          </DialogConfirm>
+          )}
         </div>
       </DialogContent>
     </Dialog>

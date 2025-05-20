@@ -2,9 +2,11 @@ import { StatusAppointments } from "@/app/plan/list-appointments/statusAppointme
 import { useLoadAppointments } from "@/hooks/useLoadAppointments";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import useUserStore from "@/stores/userStore";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 export const UserPlan = () => {
+  const router = useRouter();
   useLoadAppointments();
 
   const { user } = useUserStore((state) => state);
@@ -16,12 +18,12 @@ export const UserPlan = () => {
     <div className="flex flex-col ">
       <div className="flex justify-between">
         <span className="text-gray-700 font-bold">Agendamentos</span>
-        <Link
-          className="text-sm underline text-muted-foreground"
-          href={"plan/list-appointments"}
+        <Button
+          className="text-sm underline text-muted-foreground bg-transparent hover:bg-transparent"
+          onClick={() => router.replace("/plan/list-appointments")}
         >
           Ver lista
-        </Link>
+        </Button>
       </div>
       {appointments.length === 0 ? (
         <span className="text-gray-500 text-sm">

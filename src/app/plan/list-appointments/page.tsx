@@ -8,14 +8,14 @@ export default function Page() {
 
   return (
     <Accordion type="single" collapsible>
-      <div className="w-full max-w-3xl m-auto my-20">
+      <div className="w-full h-96 max-w-3xl m-auto my-20 ">
         <div className="text-xl text-center text-gray-700 font-bold">
           Meus Agendamentos
         </div>
         {appointments.length === 0 ? (
-          <span className="text-gray-500 text-sm text-center">
-            Nenhum agendamento encontrado.
-          </span>
+          <div className="w-full text-gray-500 text-sm text-center mt-32">
+            Nenhum agendamento encontrado...
+          </div>
         ) : (
           <UserTableAppointment appointments={appointments} userBtn="USER" />
         )}

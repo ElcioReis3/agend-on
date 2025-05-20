@@ -5,20 +5,24 @@ import api from "@/services/api";
 import useUserStore from "@/stores/userStore";
 import { useToast } from "./use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import useServiceStore from "@/stores/serviceStore";
 
 export const usePaymentValidation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const status = searchParams.get("status");
   const paymentId = searchParams.get("payment_id");
   const externalReference = searchParams.get("external_reference");
-
   const { user, setUser } = useUserStore((state) => state);
   const [count, setCount] = useState(10);
   const [isPaymentValid, setIsPaymentValid] = useState(false);
+
+  const [reserved_date, setReservedDate] = useState("");
+  const [reserved_hours, setReservedHours] = useState("");
+  const [observation, setObservation] = useState("");
+  const { services } = useServiceStore((state) => state);
 
   // 1️ Função para registrar o pagamento no backend
   const registerPayment = async () => {
@@ -44,12 +48,12 @@ export const usePaymentValidation = () => {
   const verifyPayment = async () => {
     try {
       const response = await api.put(`/payments/activate/${paymentId}`);
-      toast({ description: "Plano ativado" });
+      toast({ description: "Agendamento efetuado." });
       handlePlan();
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Erro ao atualizar plano",
+        title: "Erro ao efetuar o agendamento.",
         description: "Seu pagamento é inválido.",
       });
     }
@@ -101,7 +105,7 @@ export const usePaymentValidation = () => {
     }
   }, [count, isPaymentValid, user?.id]);
 
-  // Função para ativar o plano
+  // Função para ativar o agendamento
   const handlePlan = async () => {
     const date = new Date();
     date.setDate(date.getDate() + 30);
@@ -109,19 +113,22 @@ export const usePaymentValidation = () => {
 
     try {
       if (!user?.id) return;
-      console.log("Atualizando plano do usuário...");
-      await api.put(`/customer?id=${user.id}`, {
-        status: true,
-        dueDate: expirationDate,
+      console.log("Efetuando o agendamento do usuário...");
+      await api.post(`/add-agend?id=${user.id}`, {
+        user_id: user.id,
+        reserved_date,
+        reserved_hours,
+        services,
+        observation,
       });
       await queryClient.invalidateQueries({ queryKey: ["users"] });
-      setUser({ ...user, dueDate: expirationDate });
-      toast({ description: "Plano atualizado com sucesso!" });
+      setUser({ ...user, reserved_date: [reserved_date] });
+      toast({ description: "Agendamento efetuado com sucesso!" });
       router.replace("/"); // Redireciona para a home após sucesso
     } catch (error) {
       toast({
         variant: "destructive",
-        description: "Erro ao atualizar plano:",
+        description: "Erro ao efetuar o agendamento.",
       });
       console.log(error);
     }

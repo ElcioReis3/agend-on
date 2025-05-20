@@ -1,5 +1,4 @@
 "use client";
-
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
@@ -8,7 +7,7 @@ import useUserStore from "@/stores/userStore";
 import { useUserData } from "@/hooks/useUserData";
 
 export const Header = () => {
-  const { loading } = useUserData(); // Recebe o loading
+  const { loading } = useUserData();
   const user = useUserStore((state) => state.user);
   return (
     <header className="w-full h-32 bg-muted bg-blend-difference">

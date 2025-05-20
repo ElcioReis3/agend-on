@@ -2,8 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import useUserStore from "@/stores/userStore";
-import { getUsers } from "@/services/getUser";
-import api from "@/services/api";
+import { getUsers } from "@/services/getApi";
 
 export const useUserData = () => {
   const { data: session, status } = useSession();
@@ -36,7 +35,6 @@ export const useUserData = () => {
           const dueDate = new Date(user.dueDate);
           if (dueDate < today) {
             try {
-              await api.put(`/edit-client?id=${user.id}`, { status: false });
               setUser({ ...user });
             } catch (error) {
               console.error("Erro ao atualizar o status do usuário:", error);

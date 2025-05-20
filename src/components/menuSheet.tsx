@@ -11,16 +11,15 @@ import { Logo } from "./logo";
 import useUserStore from "@/stores/userStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getUsers } from "@/services/getUser";
 import { CustomerType } from "@/types/customerType";
 import { UserInfo } from "./Users/UserInfo";
 import { AdminPanel } from "./Admin/AdminPanel";
 import { UserPlan } from "./Users/UserServices";
 import { LogOut, Menu } from "lucide-react";
 import { DialogProfile } from "./Dialogs/Dialog-profile";
+import { getUsers } from "@/services/getApi";
 
 export const MenuSheet = () => {
-  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { user, clearUser } = useUserStore((state) => state);
   const [listUser, setListUser] = useState<CustomerType[]>([]);

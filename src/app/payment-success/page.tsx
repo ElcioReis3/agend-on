@@ -1,13 +1,14 @@
 "use client";
-
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { usePaymentValidation } from "@/hooks/usePaymentValidation";
 import { Check } from "lucide-react";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 
 const PaymentSuccessContent = () => {
   const { count, user } = usePaymentValidation();
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState<string | null>(null);
 
   return (
     <>
@@ -16,6 +17,11 @@ const PaymentSuccessContent = () => {
         <div className="text-xl">Obrigado, {user?.name}</div>
         <div className="text-green-400">Seu Pagamento foi Aprovado!</div>
         <Check className="text-green-400 animate-ping animate-out" />
+        {loading ? (
+          <div className="mt-4">Finalizando seu agendamento, aguarde...</div>
+        ) : (
+          <div className="mt-4">{message}</div>
+        )}
         {count > 0 && (
           <div className="text-xs text-muted-foreground space-x-3 mt-7">
             <span>Aguarde só um instante</span>
@@ -28,7 +34,6 @@ const PaymentSuccessContent = () => {
   );
 };
 
-// Envolvendo o componente com Suspense
 const PaymentSuccess = () => {
   return (
     <Suspense fallback={<div>Carregando informações de pagamento...</div>}>
