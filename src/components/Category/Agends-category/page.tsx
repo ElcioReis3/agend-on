@@ -1,12 +1,13 @@
 "use client";
 import { getAppointments } from "@/services/getApi";
-import useAppointmentStore from "@/stores/useAppointmentStore";
 import { RefreshCwIcon } from "lucide-react";
 import { useEffect } from "react";
 import { UserTableAppointment } from "@/components/Users/UserTableAppointment";
+import useAppointmentStore from "@/stores/useAppointmentStore";
 
 export const TableAgends = () => {
-  const { appointments, setApointment } = useAppointmentStore((state) => state);
+  const appointments = useAppointmentStore((state) => state.appointments);
+  const setApointment = useAppointmentStore((state) => state.setApointment);
 
   const handleListAgends = async () => {
     const list = await getAppointments();

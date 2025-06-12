@@ -2,7 +2,7 @@ import React from "react";
 
 interface AvailableDate {
   id?: string;
-  date: string;
+  date: Date;
   availableHours: string[];
 }
 
@@ -23,13 +23,16 @@ export function UserDateTimePicker({
   today.setHours(0, 0, 0, 0);
 
   const filteredDates = availables.filter((item) => {
-    const itemDate = new Date(item.date + "T12:00:00");
+    const itemDate = new Date(item.date);
     itemDate.setHours(0, 0, 0, 0);
     return itemDate >= today;
   });
 
   const availableHours =
-    availables.find((d) => d.date === selectedDate)?.availableHours || [];
+    availables.find((d) => {
+      const dateString = new Date(d.date).toISOString().split("T")[0];
+      return dateString === selectedDate;
+    })?.availableHours || [];
 
   return (
     <div className="flex gap-1">
@@ -38,11 +41,14 @@ export function UserDateTimePicker({
         value={selectedDate}
       >
         <option value="">Selecione uma data</option>
-        {filteredDates.map((item) => (
-          <option key={item.id} value={item.date}>
-            {item.date}
-          </option>
-        ))}
+        {filteredDates.map((item) => {
+          const date = new Date(item.date);
+          return (
+            <option key={item.id} value={date.toISOString().split("T")[0]}>
+              {date.toLocaleDateString("pt-BR")}
+            </option>
+          );
+        })}
       </select>
 
       {selectedDate && (

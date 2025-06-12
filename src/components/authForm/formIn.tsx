@@ -57,6 +57,9 @@ export function FormIn() {
       });
     } else {
       setErrorMessage("Email ou senha incorretos!");
+      toast({
+        title: "Email ou senha incorretos!",
+      });
     }
     setIsLoading(false);
   };

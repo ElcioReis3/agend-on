@@ -17,9 +17,9 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
   const { addAvailability } = useAvailabilityStore();
   const { toast } = useToast();
   const [morningStart, setMorningStart] = React.useState("08:00");
-  const [morningEnd, setMorningEnd] = React.useState("12:00");
+  const [morningEnd, setMorningEnd] = React.useState("11:00");
   const [afternoonStart, setAfternoonStart] = React.useState("14:00");
-  const [afternoonEnd, setAfternoonEnd] = React.useState("18:00");
+  const [afternoonEnd, setAfternoonEnd] = React.useState("17:00");
   const [includeMorning, setIncludeMorning] = React.useState(true);
   const [includeAfternoon, setIncludeAfternoon] = React.useState(true);
   const [intervaloMinutos, setIntervaloMinutos] = React.useState(30);
@@ -57,11 +57,13 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
         );
       }
 
-      const dataFormatada = new Date(d).toISOString().split("T")[0];
+      const dataFormatada = new Date(d);
+      dataFormatada.setHours(0, 0, 0, 0);
+      const dataISO = dataFormatada.toISOString();
 
       promises.push(
         api.post("/add-available", {
-          date: dataFormatada,
+          date: dataISO,
           availableHours: horarios,
         })
       );
@@ -90,8 +92,8 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
   }
 
   return (
-    <div className="flex gap-1 flex-col md:flex-row m-auto">
-      <div className="w-80 flex gap-2 border p-3 rounded-md justify-around">
+    <div className="flex gap-1 flex-col m-auto">
+      <div className="w-full flex gap-2 border p-3 rounded-md justify-around">
         <div className="text-center flex flex-col gap-1 items-center">
           <Label>Manhã:</Label>
           <Input

@@ -53,31 +53,37 @@ export const TableServices = () => {
       <DialogAddServices>
         <Button>Adicionar Serviços</Button>
       </DialogAddServices>
-      <Table>
-        <TableCaption>Lista completa de serviços.</TableCaption>
+      <Table className="text-sm">
+        <TableCaption className="mt-1">
+          Lista completa de serviços.
+        </TableCaption>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Título</TableHead>
-            <TableHead>Descrição</TableHead>
-            <TableHead>Duração</TableHead>
-            <TableHead>Valor</TableHead>
-            <TableHead>Ações</TableHead>
+          <TableRow className="h-9">
+            <TableHead className="w-40 px-2 py-1">Título</TableHead>
+            <TableHead className="w-40 px-2 py-1">Descrição</TableHead>
+            <TableHead className="w-40 px-2 py-1">Duração</TableHead>
+            <TableHead className="w-40 px-2 py-1">Valor</TableHead>
+            <TableHead className="w-40 px-2 py-1">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {services &&
             services.map((service) => (
-              <TableRow key={service.id}>
-                <TableCell className="font-medium">{service.title}</TableCell>
-                <TableCell>{service.description}</TableCell>
-                <TableCell>{service.temp}min</TableCell>
-                <TableCell>
+              <TableRow key={service.id} className="h-7">
+                <TableCell className="font-medium px-1 py-2">
+                  {service.title}
+                </TableCell>
+                <TableCell className="px-1 py-2">
+                  {service.description}
+                </TableCell>
+                <TableCell className="px-1 py-2">{service.temp}min</TableCell>
+                <TableCell className="px-1 py-2">
                   {service.price.toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL",
                   })}
                 </TableCell>
-                <TableCell className="flex gap-1">
+                <TableCell className="flex gap-1 px-1 py-2">
                   <DialogConfirm
                     confirm={() => handleDeleteService(service.id)}
                   >

@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 type Availability = {
   id?: string;
-  date: string;
+  date: Date;
   availableHours: string[];
 };
 

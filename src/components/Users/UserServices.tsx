@@ -31,14 +31,11 @@ export const UserPlan = () => {
         </span>
       ) : (
         appointments.map((agendamento) => (
-          <div
-            key={agendamento.id}
-            className="text-sm text-gray-700 h-52 overflow-y-auto"
-          >
-            <div className="border rounded-md p-1">
+          <div className="text-sm text-gray-700 h-52 overflow-y-auto">
+            <div key={agendamento.id} className="border rounded-md p-1">
               <div className="font-semibold">{agendamento.reserved_date}</div>
               {agendamento.services.map((service) => (
-                <div className="flex gap-1 items-center">
+                <div key={service.id} className="flex gap-1 items-center">
                   <StatusAppointments service={service} onText={false} />
                   <div className="bg-green-300 rounded-md">
                     {service.reserved_hours}

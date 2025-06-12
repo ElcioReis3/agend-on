@@ -34,6 +34,11 @@ export const CalendarClient = ({ item }: Props) => {
     handleList();
   }, [setAvailabilities, setOpenModal]);
 
+  function formatDate(date: Date | string) {
+    const parsedDate = date instanceof Date ? date : new Date(date);
+    return parsedDate.toISOString().split("T")[0];
+  }
+
   const handleDateSelect = async (selectedDate: Date | undefined) => {
     setOpenModal(true);
     if (!selectedDate) return;
@@ -49,8 +54,11 @@ export const CalendarClient = ({ item }: Props) => {
   };
 
   const horariosDisponiveis = React.useMemo(() => {
-    const dataFormatada = date?.toISOString().split("T")[0];
-    const diaDisponivel = availabilities.find((a) => a.date === dataFormatada);
+    if (!date) return [];
+    const dataFormatada = formatDate(date);
+    const diaDisponivel = availabilities.find(
+      (a) => formatDate(a.date) === dataFormatada
+    );
     return diaDisponivel?.availableHours || [];
   }, [date, availabilities]);
 
@@ -67,10 +75,11 @@ export const CalendarClient = ({ item }: Props) => {
           const comparingDate = new Date(date);
           comparingDate.setHours(0, 0, 0, 0);
 
-          const dataFormatada = comparingDate.toISOString().split("T")[0];
-          const estaDisponivel = availabilities.some(
-            (a) => a.date === dataFormatada
-          );
+          const dataFormatada = formatDate(comparingDate);
+          const estaDisponivel = availabilities.some((a) => {
+            const data = new Date(a.date);
+            return data.toISOString().split("T")[0] === dataFormatada;
+          });
 
           return comparingDate < today || !estaDisponivel;
         }}
@@ -129,6 +138,7 @@ export const CalendarClient = ({ item }: Props) => {
                         reserved_hours={horario}
                         reserved_date={date?.toLocaleDateString()}
                         services={item}
+                        onConfirm={() => setOpenModal(false)}
                       >
                         <Button className="w-full">{horario}</Button>
                       </DialogAppointments>

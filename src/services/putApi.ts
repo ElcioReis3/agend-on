@@ -1,4 +1,3 @@
-"use server";
 import { AppointmentsType } from "@/types/appointmentType";
 import api from "./api";
 

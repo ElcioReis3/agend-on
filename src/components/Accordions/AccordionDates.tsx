@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { getAvailables } from "@/services/getApi";
 import { useAvailabilityStore } from "@/stores/useAvailabilityStore";
-import { endOfWeek, isAfter, isBefore, parseISO, startOfDay } from "date-fns";
+import { endOfWeek, isAfter, isBefore, startOfDay } from "date-fns";
 import { useEffect } from "react";
 
 export function AccordionDates() {
@@ -26,11 +26,12 @@ export function AccordionDates() {
   }, [setAvailabilities]);
 
   const availabilitiesThisWeek = availabilities
-    .filter((a) => {
-      const date = parseISO(a.date);
-      return !isBefore(date, today) && !isAfter(date, endOfThisWeek);
+    .filter(({ date }) => {
+      const d = new Date(date);
+      return !isBefore(d, today) && !isAfter(d, endOfThisWeek);
     })
-    .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime());
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
   return (
     <>
       <div>
@@ -42,11 +43,16 @@ export function AccordionDates() {
         )}
         <Accordion type="single" collapsible className="w-full p-1 text-xs ">
           {availabilitiesThisWeek.map((dates) => (
-            <AccordionItem value={`${dates.id}`}>
-              <AccordionTrigger>{dates.date}</AccordionTrigger>
+            <AccordionItem key={dates.id} value={`${dates.id}`}>
+              <AccordionTrigger>
+                {new Date(dates.date).toLocaleDateString("pt-BR")}
+              </AccordionTrigger>
               <AccordionContent className="grid grid-cols-5 gap-1">
-                {dates.availableHours.map((it) => (
-                  <span className="text-xs p-1 bg-green-300 rounded-md text-black">
+                {dates.availableHours.map((it, index) => (
+                  <span
+                    key={index}
+                    className="text-xs p-1 bg-green-300 rounded-md text-black"
+                  >
                     {it}
                   </span>
                 ))}

@@ -1,5 +1,5 @@
 export type AvailabilityType = {
   id?: string;
-  date: string;
+  date: Date;
   availableHours: string[];
 };

@@ -29,25 +29,31 @@ export const TableClients = () => {
         className="cursor-pointer text-muted-foreground active:animate-spin"
         onClick={handleListClients}
       />
-      <Table>
-        <TableCaption>Lista completa de clientes.</TableCaption>
+      <Table className="text-sm">
+        <TableCaption className="mt-1">
+          Lista completa de clientes.
+        </TableCaption>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Nome</TableHead>
-            <TableHead>E-mail</TableHead>
-            <TableHead>Endereço</TableHead>
-            <TableHead className="text-right">Telefone</TableHead>
+          <TableRow className="h-8">
+            <TableHead className="w-40 px-2 py-2">Nome</TableHead>
+            <TableHead className="w-28 px-2 py-2">E-mail</TableHead>
+            <TableHead className="px-2 py-2">Endereço</TableHead>
+            <TableHead className="text-right px-2 py-2">Telefone</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {clients.map((client) => (
-            <TableRow key={client.id}>
-              <TableCell className="font-medium">
+            <TableRow key={client.id} className="h-8">
+              <TableCell className="font-medium px-2 py-2">
                 {client.name.split(" ").slice(0, 2).join(" ")}
               </TableCell>
-              <TableCell>{client.email}</TableCell>
-              <TableCell>{client.address}</TableCell>
-              <TableCell className="text-right">{client.phone}</TableCell>
+              <TableCell className="px-1 py-2 max-w-28 truncate">
+                {client.email}
+              </TableCell>
+              <TableCell className="px-2 py-2">{client.address}</TableCell>
+              <TableCell className="text-right px-2 py-2">
+                {client.phone}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

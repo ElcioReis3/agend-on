@@ -10,6 +10,7 @@ import { TableClients } from "@/components/Category/Clients-category/TableClient
 import { CalendarApp } from "@/components/Category/Calendar-category/Calendar";
 import { TableAgends } from "@/components/Category/Agends-category/page";
 import { DashboardInteractive } from "@/components/Dashboard/Dashboard-interactive";
+import { SettingOption } from "@/components/Category/Setting-option/page";
 
 type PageKey =
   | "home"
@@ -40,7 +41,7 @@ const pages: Record<PageKey, JSX.Element> = {
   appointments: <TableAgends />,
   services: <TableServices />,
   clients: <TableClients />,
-  settings: <h1 className="text-center text-2xl font-bold">Configurações</h1>,
+  settings: <SettingOption />,
   help: <h1 className="text-center text-2xl font-bold">Ajuda</h1>,
 };
 

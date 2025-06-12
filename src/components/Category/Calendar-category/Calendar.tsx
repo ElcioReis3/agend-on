@@ -9,25 +9,33 @@ export function CalendarApp() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
   return (
-    <div className="w-full max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="col-span-1 md:col-span-2 m-auto">
+    <div className="w-full max-w-6xl flex flex-col md:flex-row gap-4 px-4 mx-auto">
+      {/* Coluna 1: SelectHours */}
+      <div className="max-w-80 m-auto">
         <SelectHours dateRange={dateRange} setDateRange={setDateRange} />
       </div>
-      <Calendar
-        className="w-80 rounded-md border shadow px-7 m-auto md:mx-3"
-        mode="range"
-        selected={dateRange}
-        onSelect={setDateRange}
-        disabled={(date) => {
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          const comparingDate = new Date(date);
-          comparingDate.setHours(0, 0, 0, 0);
-          return comparingDate < today;
-        }}
-      />
-      <div className="max-w-96 m-auto">
-        <AccordionDates />
+      {/* Coluna 2: Calendário */}
+      <div className="w-min m-auto">
+        <Calendar
+          className="w-full rounded-md border shadow px-4 py-2 my-2"
+          mode="range"
+          selected={dateRange}
+          onSelect={setDateRange}
+          disabled={(date) => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const comparingDate = new Date(date);
+            comparingDate.setHours(0, 0, 0, 0);
+            return comparingDate < today;
+          }}
+        />
+      </div>
+
+      {/* Coluna 3: AccordionDates */}
+      <div className="w-full md:w-1/3 flex justify-center md:justify-end">
+        <div className="w-full max-w-sm">
+          <AccordionDates />
+        </div>
       </div>
     </div>
   );
