@@ -93,7 +93,7 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
 
   return (
     <div className="flex gap-1 flex-col m-auto">
-      <div className="w-full flex gap-2 border p-3 rounded-md justify-around">
+      <div className="w-full flex gap-2 border p-3 rounded-md justify-around shadow-md">
         <div className="text-center flex flex-col gap-1 items-center">
           <Label>Manhã:</Label>
           <Input
@@ -147,7 +147,7 @@ export const SelectHours = ({ dateRange, setDateRange }: SelectHoursProps) => {
           </Label>
         </div>
       </div>
-      <div className="w-full max-w-80 flex flex-col gap-1 border p-3 rounded-md">
+      <div className="w-full max-w-80 flex flex-col gap-1 border p-3 rounded-md shadow-md">
         <div className="flex gap-1">
           <Label
             htmlFor="intervalo"

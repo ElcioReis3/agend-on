@@ -1,6 +1,6 @@
 "use client";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { Footer } from "@/components/Layout/footer";
+import { Header } from "@/components/Layout/header";
 import { usePaymentValidation } from "@/hooks/usePaymentValidation";
 import { Check } from "lucide-react";
 import { Suspense, useState } from "react";

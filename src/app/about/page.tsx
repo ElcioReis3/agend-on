@@ -1,4 +1,3 @@
-import { Header } from "@/components/header";
 import {
   Accordion,
   AccordionContent,
@@ -8,8 +7,9 @@ import {
 import { LucideLink } from "lucide-react";
 import "@flaticon/flaticon-uicons/css/all/all.css";
 import Link from "next/link";
-import { Footer } from "@/components/footer";
-import { Location } from "@/components/location";
+import { Footer } from "@/components/Layout/footer";
+import { Location } from "@/components/Layout/location";
+import { Header } from "@/components/Layout/header";
 
 export default function Page() {
   return (

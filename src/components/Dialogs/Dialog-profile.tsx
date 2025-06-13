@@ -25,11 +25,9 @@ type Props = {
 export const DialogProfile = ({ children }: Props) => {
   const queryClient = useQueryClient();
   const { user, setUser } = useUserStore();
-
   const [localName, setLocalName] = useState(user?.name || "");
   const [localPhone, setLocalPhone] = useState(user?.phone || "");
   const [localAddress, setLocalAddress] = useState(user?.address || "");
-
   const [isOpen, setIsOpen] = useState(false);
   const [duesCancel, setDuesCancel] = useState("");
   const [isEditing, setIsEditing] = useState(false);

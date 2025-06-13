@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Services } from "@/data/services";
 
 export const TablePrice = () => {
   return (
@@ -19,7 +18,7 @@ export const TablePrice = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Services.map((item, index) => (
+        {/* {Services.map((item, index) => (
           <TableRow key={index} className="text-sm md:text-base lg:text-xl">
             <TableCell className="flex items-center gap-1">
               {" "}
@@ -28,7 +27,7 @@ export const TablePrice = () => {
             </TableCell>
             <TableCell className="text-right">{item.price}</TableCell>
           </TableRow>
-        ))}
+        ))} */}
       </TableBody>
     </Table>
   );

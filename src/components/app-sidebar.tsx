@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import {
   HomeIcon,
@@ -11,7 +10,6 @@ import {
   SettingsIcon,
   HelpCircleIcon,
 } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -20,7 +18,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Logo } from "./logo";
+import { Logo } from "./Layout/logo";
 
 // Adicionamos "home" como uma opção válida
 type PageKey =

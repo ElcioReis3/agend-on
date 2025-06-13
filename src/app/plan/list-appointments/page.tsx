@@ -2,9 +2,11 @@
 import { Accordion } from "@/components/ui/accordion";
 import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import { UserTableAppointment } from "@/components/Users/UserTableAppointment";
+import { useLoadAppointments } from "@/hooks/useLoadAppointments";
 
 export default function Page() {
-  const { appointments } = useAppointmentsStore();
+  useLoadAppointments();
+  const appointments = useAppointmentsStore((state) => state.appointments);
 
   return (
     <Accordion type="single" collapsible>

@@ -69,7 +69,7 @@ export const DialogCancelPlan = ({ asChild, userId, children }: Props) => {
       toast({
         title: "Erro",
         description: "❌ Data de assinatura não encontrada.",
-        variant: "destructive", // Estilo do toast
+        variant: "destructive",
       });
       return;
     }
@@ -97,7 +97,6 @@ export const DialogCancelPlan = ({ asChild, userId, children }: Props) => {
         description: successMessage,
         variant: "default",
       });
-
       // Gerar PDF
       generatePDF(successMessage);
 

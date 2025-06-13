@@ -1,6 +1,6 @@
-import { Banner } from "@/components/banner";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { Banner } from "@/components/Layout/banner";
+import { Footer } from "@/components/Layout/footer";
+import { Header } from "@/components/Layout/header";
 
 export default function Home() {
   return (

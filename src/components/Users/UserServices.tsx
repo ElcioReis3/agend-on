@@ -8,9 +8,8 @@ import { Button } from "../ui/button";
 export const UserPlan = () => {
   const router = useRouter();
   useLoadAppointments();
-
-  const { user } = useUserStore((state) => state);
-  const { appointments } = useAppointmentsStore();
+  const user = useUserStore((state) => state.user);
+  const appointments = useAppointmentsStore((state) => state.appointments);
 
   if (user?.role !== "USER") return null;
 
@@ -32,8 +31,10 @@ export const UserPlan = () => {
       ) : (
         appointments.map((agendamento) => (
           <div className="text-sm text-gray-700 h-52 overflow-y-auto">
-            <div key={agendamento.id} className="border rounded-md p-1">
-              <div className="font-semibold">{agendamento.reserved_date}</div>
+            <div className="border rounded-md p-1">
+              <div key={agendamento.id} className="font-semibold">
+                {agendamento.reserved_date}
+              </div>
               {agendamento.services.map((service) => (
                 <div key={service.id} className="flex gap-1 items-center">
                   <StatusAppointments service={service} onText={false} />

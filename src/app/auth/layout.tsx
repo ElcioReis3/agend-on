@@ -1,5 +1,5 @@
-import { Footer } from "@/components/footer";
-import { Logo } from "@/components/logo";
+import { Footer } from "@/components/Layout/footer";
+import { Logo } from "@/components/Layout/logo";
 import { Metadata } from "next";
 import { ReactNode } from "react";
 

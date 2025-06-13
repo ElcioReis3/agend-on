@@ -4,8 +4,10 @@ import useAppointmentsStore from "@/stores/useAppointmentsStore";
 import { getAppointment } from "@/services/getApi";
 
 export const useLoadAppointments = () => {
-  const { user } = useUserStore();
-  const { setAppointments } = useAppointmentsStore();
+  const user = useUserStore((state) => state.user);
+  const setAppointments = useAppointmentsStore(
+    (state) => state.setAppointments
+  );
 
   useEffect(() => {
     const fetchAppointments = async () => {

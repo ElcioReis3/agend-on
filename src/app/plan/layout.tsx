@@ -1,5 +1,5 @@
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { Footer } from "@/components/Layout/footer";
+import { Header } from "@/components/Layout/header";
 import { Metadata } from "next";
 import { ReactNode } from "react";
 

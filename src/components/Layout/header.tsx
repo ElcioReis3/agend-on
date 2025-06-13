@@ -1,10 +1,10 @@
 "use client";
-import { Logo } from "@/components/logo";
-import { ThemeToggle } from "@/components/theme-toggle";
-import Link from "next/link";
-import { MenuSheet } from "./menuSheet";
-import useUserStore from "@/stores/userStore";
+import { Logo } from "@/components/Layout/logo";
 import { useUserData } from "@/hooks/useUserData";
+import useUserStore from "@/stores/userStore";
+import { ThemeToggle } from "../theme-toggle";
+import { MenuSheet } from "../menuSheet";
+import Link from "next/link";
 
 export const Header = () => {
   const { loading } = useUserData();

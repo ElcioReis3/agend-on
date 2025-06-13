@@ -1,6 +1,6 @@
 "use client";
 import { JSX, useState } from "react";
-import { Footer } from "@/components/footer";
+import { Footer } from "@/components/Layout/footer";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SiteHeader } from "@/components/site-header";

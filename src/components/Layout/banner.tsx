@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { ButtonLink } from "./ButtonLink";
 import { useEffect } from "react";
+import { ButtonLink } from "../ButtonLink";
 
 export const Banner = () => {
   const router = useRouter();

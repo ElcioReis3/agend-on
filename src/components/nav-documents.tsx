@@ -1,12 +1,10 @@
 "use client";
-
 import {
   FolderIcon,
   MoreHorizontalIcon,
   ShareIcon,
   type LucideIcon,
 } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,

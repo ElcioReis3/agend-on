@@ -1,5 +1,3 @@
-import { Menu } from "lucide-react";
-import { DialogProfile } from "../Dialogs/Dialog-profile";
 import useUserStore from "@/stores/userStore";
 
 const formatPhone = (phone: string) => {

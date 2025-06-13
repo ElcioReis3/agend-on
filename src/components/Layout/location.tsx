@@ -1,9 +1,7 @@
 "use client";
-import useUserStore from "@/stores/userStore";
-import { ButtonLink } from "./ButtonLink";
+import { ButtonLink } from "../ButtonLink";
 
 export const Location = () => {
-  const user = useUserStore((state) => state.user);
   return (
     <div className="w-full max-w-xl m-auto my-7 flex flex-col items-center gap-3 p-3 text-base md:text-xl">
       <div className="font-bold text-colorMark">LOCALIZAÇÃO</div>

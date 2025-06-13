@@ -41,7 +41,11 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
             >
               <TableCell className="px-1 py-2">
                 {appointment.services.map((service) => (
-                  <StatusAppointments service={service} onText={true} />
+                  <StatusAppointments
+                    key={service.id}
+                    service={service}
+                    onText={true}
+                  />
                 ))}
               </TableCell>
               <TableCell className="font-medium flex flex-col md:flex-row px-2 items-center justify-center">
@@ -74,7 +78,6 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
                   </div>
                 ))}
               </TableCell>
-
               <TableCell className="px-2 py-2">
                 <ActionsAgend item={appointment} userBtn={`${userBtn}`}>
                   <Menu className="cursor-pointer" />
