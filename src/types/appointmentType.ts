@@ -12,6 +12,7 @@ export type AppointmentsType = {
     reserved_hours: string[];
     due_date: string[];
     status: "reserved" | "completed" | "canceled" | "reprice";
+    observation?: string;
   }[];
   reserved_date: string;
   created_at?: string;

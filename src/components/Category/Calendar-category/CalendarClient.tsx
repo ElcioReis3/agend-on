@@ -9,11 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useAvailabilityStore } from "@/stores/useAvailabilityStore";
-import { DialogAppointments } from "@/components/Dialogs/DialogAppointments";
 import { ServiceType } from "@/types/servicesType";
 import { getAvailables } from "@/services/getApi";
+import { AvailablesFormattedHours } from "@/services/AvailablesFormattedHours";
 
 type Props = {
   item?: ServiceType;
@@ -97,56 +96,13 @@ export const CalendarClient = ({ item }: Props) => {
 
           <div className="flex flex-col gap-4">
             <h2 className="text-lg font-semibold">Horários disponíveis</h2>
-            <div className="grid gap-1 grid-cols-4">
-              {horariosDisponiveis.length === 0 && (
-                <span className="text-sm text-muted-foreground col-span-4">
-                  Nenhum horário disponível para esta data.
-                </span>
-              )}
-
-              {horariosDisponiveis.map((horario) => {
-                const ocupado = horariosOcupados.includes(horario);
-
-                const hoje = new Date();
-                const mesmaData =
-                  date && hoje.toDateString() === new Date(date).toDateString();
-
-                let desabilitadoPorTempo = false;
-                if (mesmaData) {
-                  const [horaDisp, minutoDisp] = horario.split(":").map(Number);
-                  const horarioDisponivel = new Date();
-                  horarioDisponivel.setHours(horaDisp, minutoDisp, 0, 0);
-
-                  const diferencaMinutos =
-                    (hoje.getTime() - horarioDisponivel.getTime()) /
-                    (1000 * 60);
-                  desabilitadoPorTempo = diferencaMinutos > 5;
-                }
-                const desabilitado = ocupado || desabilitadoPorTempo;
-
-                return (
-                  <div key={horario}>
-                    {desabilitado ? (
-                      <Button
-                        disabled
-                        className="bg-gray-400 text-gray-600 cursor-not-allowed w-full"
-                      >
-                        {horario}
-                      </Button>
-                    ) : (
-                      <DialogAppointments
-                        reserved_hours={horario}
-                        reserved_date={date?.toLocaleDateString()}
-                        services={item}
-                        onConfirm={() => setOpenModal(false)}
-                      >
-                        <Button className="w-full">{horario}</Button>
-                      </DialogAppointments>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            <AvailablesFormattedHours
+              horariosDisponiveis={horariosDisponiveis}
+              horariosOcupados={horariosOcupados}
+              date={date}
+              item={item}
+              onClose={() => setOpenModal(false)}
+            />
           </div>
         </DialogContent>
       </Dialog>

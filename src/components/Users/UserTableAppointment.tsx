@@ -24,11 +24,12 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
       <TableCaption>Lista completa de Agendamentos.</TableCaption>
       <TableHeader>
         <TableRow className="h-9">
-          <TableHead className="w-40 px-1 py-2">Status</TableHead>
+          <TableHead className="w-36 px-1 py-2">Status</TableHead>
           <TableHead className="w-32 md:w-40 px-1 py-2">Data</TableHead>
           <TableHead className="w-40 px-1 py-2">Serviço</TableHead>
+          <TableHead className="w-40 px-1 py-2">Observações</TableHead>
           <TableHead className="w-40 px-1 py-2">Cliente</TableHead>
-          <TableHead className="w-40 px-1 py-2">Vencimento</TableHead>
+          <TableHead className="w-32 px-1 py-2">Vencimento</TableHead>
           <TableHead className="px-1 py-2">Ações</TableHead>
         </TableRow>
       </TableHeader>
@@ -67,13 +68,22 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
                 ))}
               </TableCell>
               <TableCell className="px-2 py-2">
+                {appointment.services.map((observation) => (
+                  <span className="text-xs text-red-700">
+                    {observation.observation}
+                  </span>
+                ))}
+              </TableCell>
+              <TableCell className="px-2 py-2">
                 {appointment.user_name}
               </TableCell>
               <TableCell className="px-2 py-2">
                 {appointment.services.map((service) => (
                   <div key={service.id}>
                     {service.due_date.map((date) => (
-                      <span key={service.id}>{FormattedDate(date)}</span>
+                      <span className="text-xs" key={service.id}>
+                        {FormattedDate(date)}
+                      </span>
                     ))}
                   </div>
                 ))}

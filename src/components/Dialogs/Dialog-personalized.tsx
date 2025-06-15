@@ -23,7 +23,7 @@ export const DialogPersonalized = ({
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="overflow-scroll">
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Edite as informações como desejar.</DialogTitle>
           <DialogDescription>
@@ -31,9 +31,9 @@ export const DialogPersonalized = ({
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-1">{contentArea}</div>
-        <div>
-          <Button onClick={confirm}>Confirmar mudanças</Button>
-        </div>
+        <Button className="w-full" onClick={confirm}>
+          Confirmar mudanças
+        </Button>
       </DialogContent>
     </Dialog>
   );

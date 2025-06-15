@@ -4,6 +4,7 @@ import { RefreshCwIcon } from "lucide-react";
 import { useEffect } from "react";
 import { UserTableAppointment } from "@/components/Users/UserTableAppointment";
 import useAppointmentStore from "@/stores/useAppointmentStore";
+import { chartDateFilter } from "@/data/AppointsData";
 
 export const TableAgends = () => {
   const appointments = useAppointmentStore((state) => state.appointments);
@@ -14,6 +15,7 @@ export const TableAgends = () => {
     setApointment(list);
   };
   useEffect(() => {
+    const dataList = chartDateFilter(appointments);
     handleListAgends();
   }, [setApointment]);
 

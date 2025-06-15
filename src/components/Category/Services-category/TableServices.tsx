@@ -123,7 +123,7 @@ export const TableServices = () => {
                           <Label>
                             Título
                             <Input
-                              className="w-60 mt-1"
+                              className="w-full mt-1"
                               value={editedService.title}
                               onChange={(e) =>
                                 setEditedService({
@@ -136,7 +136,7 @@ export const TableServices = () => {
                           <Label>
                             Descrição
                             <Input
-                              className="w-60 mt-1"
+                              className="w-full mt-1"
                               value={editedService.description}
                               onChange={(e) =>
                                 setEditedService({
@@ -146,11 +146,11 @@ export const TableServices = () => {
                               }
                             />
                           </Label>
-                          <div className="flex gap-3 mt-1">
+                          <div className="w-full flex gap-3 mt-1">
                             <Label>
                               Duração{" "}
                               <Input
-                                className="w-20 mt-1"
+                                className="w-full mt-1"
                                 type="number"
                                 value={editedService.temp}
                                 onChange={(e) =>
@@ -164,7 +164,7 @@ export const TableServices = () => {
                             <Label>
                               Preço{" "}
                               <Input
-                                className="w-20 mt-1"
+                                className="w-full mt-1"
                                 type="number"
                                 value={editedService.price}
                                 onChange={(e) =>

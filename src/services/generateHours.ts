@@ -1,6 +1,7 @@
 import { getAppointments } from "@/services/getApi";
 import { AppointmentsType } from "@/types/appointmentType";
 import { AvailabilityType } from "@/types/availabilityType";
+import React from "react";
 export function generateHours(
   start: string,
   end: string,
@@ -10,13 +11,10 @@ export function generateHours(
   const hours: string[] = [];
   const [startHours, startMinutes] = start.split(":").map(Number);
   const [endHours, endMinutes] = end.split(":").map(Number);
-
   let current = new Date();
   current.setHours(startHours, startMinutes, 0, 0);
-
   const endDate = new Date();
   endDate.setHours(endHours, endMinutes, 0, 0);
-
   while (current <= endDate) {
     const hoursFormatted = current.getHours().toString().padStart(2, "0");
     const minutesFormatted = current.getMinutes().toString().padStart(2, "0");
@@ -53,7 +51,7 @@ export function filterAvailables(
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
   return availables.map((day) => {
-    if (day.date === todayStr) {
+    if (day.date.toString() === todayStr) {
       const filteredHours = day.availableHours.filter((hour) => {
         const [h, m] = hour.split(":").map(Number);
         const hourInMinutes = h * 60 + m;
