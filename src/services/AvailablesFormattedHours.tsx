@@ -34,7 +34,6 @@ export const AvailablesFormattedHours = ({
 
       {horariosDisponiveis.map((horario) => {
         const ocupado = horariosOcupados.includes(horario);
-
         const mesmaData = hoje.toDateString() === new Date(date).toDateString();
 
         let desabilitadoPorTempo = false;

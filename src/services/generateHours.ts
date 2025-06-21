@@ -27,7 +27,7 @@ export function generateHours(
 }
 
 export async function buscarHorariosOcupados(data: Date) {
-  const dataFormatada = data.toLocaleDateString("pt-BR");
+  const dataFormatada = data.toISOString().split("T")[0];
   const agendamentos = await getAppointments();
   const horariosOcupados: string[] = [];
 

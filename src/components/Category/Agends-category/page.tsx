@@ -1,7 +1,7 @@
 "use client";
 import { getAppointments } from "@/services/getApi";
 import { RefreshCwIcon } from "lucide-react";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { UserTableAppointment } from "@/components/Users/UserTableAppointment";
 import useAppointmentStore from "@/stores/useAppointmentStore";
 import { chartDateFilter } from "@/data/AppointsData";
@@ -15,16 +15,12 @@ export const TableAgends = () => {
     setApointment(list);
   };
   useEffect(() => {
-    const dataList = chartDateFilter(appointments);
     handleListAgends();
   }, [setApointment]);
 
   return (
     <div className="min-h-96">
-      <RefreshCwIcon
-        className="cursor-pointer text-muted-foreground active:animate-spin"
-        onClick={handleListAgends}
-      />
+      <RefreshCwIcon className="cursor-pointer text-muted-foreground active:animate-spin" />
       <UserTableAppointment appointments={appointments} userBtn="ADMIN" />
     </div>
   );

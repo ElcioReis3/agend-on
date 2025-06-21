@@ -43,10 +43,16 @@ export const DialogAppointments = ({
       return;
     }
 
+    const [day, month, year] = reserved_date.split("/");
+    const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
+      2,
+      "0"
+    )}`;
+
     try {
       const response = await api.post("/add-agend", {
         id_user: user.id,
-        reserved_date,
+        reserved_date: formattedDate,
         reserved_hours: [reserved_hours],
         services: [services],
         observation,

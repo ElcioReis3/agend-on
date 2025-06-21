@@ -68,9 +68,9 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
                 ))}
               </TableCell>
               <TableCell className="px-2 py-2">
-                {appointment.services.map((observation) => (
-                  <span className="text-xs text-red-700">
-                    {observation.observation}
+                {appointment.services.map((obs) => (
+                  <span key={obs.id} className="text-xs text-red-700">
+                    {obs.observation}
                   </span>
                 ))}
               </TableCell>
@@ -80,8 +80,8 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
               <TableCell className="px-2 py-2">
                 {appointment.services.map((service) => (
                   <div key={service.id}>
-                    {service.due_date.map((date) => (
-                      <span className="text-xs" key={service.id}>
+                    {service.due_date.map((date, index) => (
+                      <span key={index} className="text-xs">
                         {FormattedDate(date)}
                       </span>
                     ))}

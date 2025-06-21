@@ -42,7 +42,7 @@ export function AccordionDates() {
 
   return (
     <div>
-      <div className="font-bold mb-2">Disponibilidades esta Semana</div>
+      <div className="font-bold mb-2">Disponibilidades geradas</div>
       {availabilities.length === 0 && (
         <div className="text-sm text-muted-foreground">
           Nenhuma disponibilidade para esta semana.

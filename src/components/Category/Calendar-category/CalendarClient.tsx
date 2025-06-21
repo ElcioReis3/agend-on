@@ -27,7 +27,6 @@ export const CalendarClient = ({ item }: Props) => {
   useEffect(() => {
     const handleList = async () => {
       const list = await getAvailables();
-      console.log("lista", list);
       setAvailabilities(list);
     };
     handleList();

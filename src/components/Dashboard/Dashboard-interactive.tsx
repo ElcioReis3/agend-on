@@ -1,5 +1,4 @@
 "use client";
-import * as React from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
@@ -23,11 +22,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import useAppointmentsStore from "@/stores/useAppointmentsStore";
-import { chartData, chartDateFilter } from "@/data/AppointsData";
+import { useEffect, useState } from "react";
 import useAppointmentStore from "@/stores/useAppointmentStore";
 import { getAppointments } from "@/services/getApi";
-import { getChartData } from "@/data/chartData";
+import useDashboardStore from "@/stores/dashboardStore";
+import { carregarMetricasDashboard } from "@/utils/dashboardMetrics";
+import { calcularCrescimento } from "@/utils/dashboardUtils";
 
 const chartConfig = {
   visitors: {
@@ -43,20 +43,42 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+type result = {
+  agendamentos: number;
+  concluidos: number;
+  date: string;
+}[];
+
 export function DashboardInteractive() {
   const isMobile = useIsMobile();
-  const [timeRange, setTimeRange] = React.useState("30d");
-  const chartData = getChartData();
+  const [timeRange, setTimeRange] = useState("30d");
+  const setApointment = useAppointmentStore((state) => state.setApointment);
+  const [chartData, setChartData] = useState<result>([]);
+  const resumoPorDia = useDashboardStore((state) => state.metrics.resumoPorDia);
 
-  React.useEffect(() => {
-    if (isMobile) {
+  const handleListAgends = async () => {
+    const list = await getAppointments();
+    setApointment(list);
+  };
+
+  useEffect(() => {
+    carregarMetricasDashboard();
+    handleListAgends();
+    if (isMobile && timeRange !== "7d") {
       setTimeRange("7d");
     }
-  }, [isMobile]);
+    const formated = resumoPorDia.map((dia) => ({
+      date: dia.date,
+      agendamentos: dia.totalAgendados,
+      concluidos: dia.totalConcluidos,
+    }));
+    setChartData(formated);
+  }, []);
 
   const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date);
-    const referenceDate = new Date("2024-06-30");
+    const date = new Date(item.date + "T07:00:00");
+    const referenceDate = new Date();
+    referenceDate.setHours(12, 0, 0, 0);
     let daysToSubtract = 90;
     if (timeRange === "30d") {
       daysToSubtract = 30;
@@ -73,10 +95,11 @@ export function DashboardInteractive() {
       <CardHeader className="relative">
         <CardTitle>Dashboard</CardTitle>
         <CardDescription>
-          <span className="@[540px]/card:block hidden">
-            Total dos últimos 3 meses
+          <span className="@[540px]/card:hidden">
+            {timeRange === "90d" && <span>Últimos 3 meses</span>}
+            {timeRange === "30d" && <span>Últimos 30 dias</span>}
+            {timeRange === "7d" && <span>Últimos 7 dias</span>}
           </span>
-          <span className="@[540px]/card:hidden">Últimos 3 meses</span>
         </CardDescription>
         <div className="absolute right-4 top-4">
           <ToggleGroup
@@ -90,7 +113,7 @@ export function DashboardInteractive() {
               Últimos 3 meses
             </ToggleGroupItem>
             <ToggleGroupItem value="30d" className="h-8 px-2.5">
-              Últimos 3 dias
+              Últimos 30 dias
             </ToggleGroupItem>
             <ToggleGroupItem value="7d" className="h-8 px-2.5">
               Últimos 7 dias
@@ -157,10 +180,10 @@ export function DashboardInteractive() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
+                const date = new Date(value + "T12:00:00");
+                return date.toLocaleDateString("pt-BR", {
+                  day: "2-digit",
                   month: "short",
-                  day: "numeric",
                 });
               }}
             />
@@ -169,9 +192,10 @@ export function DashboardInteractive() {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
+                    const date = new Date(value + "T12:00:00");
+                    return date.toLocaleDateString("pt-BR", {
+                      day: "2-digit",
                       month: "short",
-                      day: "numeric",
                     });
                   }}
                   indicator="dot"
