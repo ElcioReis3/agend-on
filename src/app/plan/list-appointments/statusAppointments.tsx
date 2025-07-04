@@ -10,25 +10,25 @@ export const StatusAppointments = ({ service, onText }: Props) => {
   return (
     <div key={service.id}>
       {service.status === "completed" && (
-        <span className="flex items-center bg-green-400 p-1 rounded-md">
+        <span className="w-min flex items-center px-2 bg-green-400 rounded-md text-xs justify-center">
           <Check />
-          {onText && "Atentido"}
+          {/* {onText && "Atentido"} */}
         </span>
       )}
       {service.status === "reprice" && (
-        <span className="flex items-center bg-gray-400 p-1 rounded-md">
-          <CalendarSync /> {onText && "Reagendado"}
+        <span className="w-min flex items-center px-2 bg-green-400 rounded-md text-xs justify-center">
+          <CalendarSync /> {/* {onText && "Reagendado"} */}
         </span>
       )}
       {service.status === "reserved" && (
-        <span className="flex items-center bg-gray-400 p-1 rounded-md">
-          <CalendarClock /> {onText && "Reservado"}
+        <span className="w-min flex items-center px-2 bg-gray-400 rounded-md text-xs justify-center">
+          <CalendarClock /> {/* {onText && "Reservado"} */}
         </span>
       )}
       {service.status === "canceled" && (
-        <span className="flex items-center bg-red-400 p-1 rounded-md">
+        <span className="w-min flex items-center px-2 bg-red-400 rounded-md text-xs justify-center">
           <X />
-          {onText && "Cancelado"}
+          {/* {onText && "Cancelado"} */}
         </span>
       )}
     </div>

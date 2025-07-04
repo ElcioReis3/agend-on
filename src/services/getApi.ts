@@ -13,13 +13,17 @@ export const getServices = async (): Promise<ServiceType[]> => {
   const response = await api.get("/list-service");
   return response.data;
 };
-export const getAppointments = async (): Promise<AppointmentsType[]> => {
-  const response = await api.get("/list-agend");
+export const getAppointments = async (
+  order?: "asc" | "desc"
+): Promise<AppointmentsType[]> => {
+  const response = await api.get("list-agend", {
+    params: { order },
+  });
   return response.data;
 };
 export const getAppointment = async (id_user: string) => {
   const response = await api.get("list-agend", {
-    params: { id_user },
+    params: { id_user, order: "asc" },
   });
   return response.data;
 };

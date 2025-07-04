@@ -34,7 +34,7 @@ export const DialogProfile = ({ children }: Props) => {
 
   const handleSave = async () => {
     try {
-      const response = await api.put(`/customer?id=${user?.id}`, {
+      const response = await api.put(`/edit-client?id=${user?.id}`, {
         name: localName,
         phone: localPhone,
         address: localAddress,

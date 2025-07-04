@@ -57,11 +57,12 @@ export function SectionCards() {
           <div className="absolute right-4 top-4">
             <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
               {crescimentoReceita.isPositive ? (
-                <TrendingUp className="w-4 h-4 text-green-500" />
+                <TrendingUp className="w-4 h-4 text-orange-500" />
               ) : (
                 <TrendingDown className="w-4 h-4 text-red-500" />
               )}
             </Badge>
+            {crescimentoReceita.percentage}
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
@@ -87,6 +88,7 @@ export function SectionCards() {
                 <TrendingDown className="w-4 h-4 text-red-500" />
               )}
             </Badge>
+            {crescimentoConcluidos.percentage}
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
@@ -134,6 +136,7 @@ export function SectionCards() {
                 <TrendingDown className="w-4 h-4 text-red-500" />
               )}
             </Badge>
+            {crescimentoTicketMedio.percentage}
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">

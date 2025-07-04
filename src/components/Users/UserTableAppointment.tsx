@@ -11,7 +11,7 @@ import {
 import { FormattedDate } from "@/services/formattedDate";
 import { AppointmentsType } from "@/types/appointmentType";
 import { ActionsAgend } from "../Category/Agends-category/ActionsAgend";
-import { Menu } from "lucide-react";
+import { CalendarClock, CalendarSync, Check, Menu, X } from "lucide-react";
 
 type Props = {
   appointments: AppointmentsType[];
@@ -21,7 +21,25 @@ type Props = {
 export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
   return (
     <Table className="text-sm border-collapse">
-      <TableCaption>Lista completa de Agendamentos.</TableCaption>
+      <TableCaption>
+        <div>Lista completa de Agendamentos.</div>
+        <div className="w-max flex gap-1 m-auto">
+          <span className="w-min flex items-center px-2 bg-green-400 rounded-md text-xs justify-center">
+            <Check />
+            Atentido
+          </span>
+          <span className="w-min flex items-center px-2 bg-green-400 rounded-md text-xs justify-center">
+            <CalendarSync /> Reagendado
+          </span>
+          <span className="w-min flex items-center px-2 bg-gray-400 rounded-md text-xs justify-center">
+            <CalendarClock /> Reservado
+          </span>
+          <span className="w-min flex items-center px-2 bg-red-400 rounded-md text-xs justify-center">
+            <X />
+            Cancelado
+          </span>
+        </div>
+      </TableCaption>
       <TableHeader>
         <TableRow className="h-9">
           <TableHead className="w-36 px-1 py-2">Status</TableHead>
@@ -38,7 +56,7 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
           appointments.map((appointment) => (
             <TableRow
               key={appointment.id}
-              className="space-x-0 sm:text-xs md:text-sm h-7"
+              className="space-x-0 sm:text-xs md:text-sm"
             >
               <TableCell className="px-1 py-2">
                 {appointment.services.map((service) => (
@@ -49,14 +67,14 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
                   />
                 ))}
               </TableCell>
-              <TableCell className="font-medium flex flex-col md:flex-row px-2 items-center justify-center">
+              <TableCell className=" font-medium flex flex-col md:flex-row px-2 items-center justify-center">
                 <div>
                   {appointment.reserved_date.split("-").reverse().join("/")}
                 </div>
                 {appointment.services.map((service) => (
                   <div
                     key={service.id}
-                    className="bg-gray-300 px-2 text-center text-xs rounded-sm text-black md:text-sm"
+                    className="px-2 text-center text-xs rounded-sm text-muted-foreground"
                   >
                     {service.reserved_hours}
                   </div>
@@ -64,7 +82,9 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
               </TableCell>
               <TableCell className="px-2 py-2">
                 {appointment.services.map((service) => (
-                  <div key={service.id}>{service.title}</div>
+                  <div className="min-w-32 px-2 py-2" key={service.id}>
+                    {service.title}
+                  </div>
                 ))}
               </TableCell>
               <TableCell className="px-2 py-2">
