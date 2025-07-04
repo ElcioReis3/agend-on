@@ -50,7 +50,14 @@ export const DialogAppointments = ({
     )}`;
 
     try {
-      const response = await api.post("/add-agend", {
+      const response = await api.post("/checkout", {
+        title: services.title,
+        quantity: 1,
+        price: services.price,
+        description: services.description,
+      });
+      window.open(response.data.url, "_blank");
+      /* const response = await api.post("/add-agend", {
         id_user: user.id,
         reserved_date: formattedDate,
         reserved_hours: [reserved_hours],
@@ -62,7 +69,7 @@ export const DialogAppointments = ({
         toast({ title: "Agendamento concluído com sucesso!" });
         setIsOpen(false);
         onConfirm && onConfirm();
-      }
+      } */
     } catch (error) {
       toast({ title: "Erro ao realizar o agendamento." });
     }

@@ -1,3 +1,4 @@
+"use client";
 import { StatusAppointments } from "@/app/plan/list-appointments/statusAppointments";
 import {
   Table,
@@ -12,6 +13,8 @@ import { FormattedDate } from "@/services/formattedDate";
 import { AppointmentsType } from "@/types/appointmentType";
 import { ActionsAgend } from "../Category/Agends-category/ActionsAgend";
 import { CalendarClock, CalendarSync, Check, Menu, X } from "lucide-react";
+import { accordionFilterDates, FilterType } from "@/utils/accordionFilterDates";
+import { useState } from "react";
 
 type Props = {
   appointments: AppointmentsType[];
@@ -19,6 +22,12 @@ type Props = {
 };
 
 export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>("thisWeek");
+
+  const filteredAvailabilities = appointments.filter((item) =>
+    accordionFilterDates(new Date(item.reserved_date), selectedFilter)
+  );
+
   return (
     <Table className="text-sm border-collapse">
       <TableCaption>
