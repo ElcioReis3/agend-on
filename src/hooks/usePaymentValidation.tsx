@@ -6,6 +6,7 @@ import useUserStore from "@/stores/userStore";
 import { useToast } from "./use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import useServiceStore from "@/stores/serviceStore";
+import useselectServiceStore from "@/stores/useSelectionService";
 
 export const usePaymentValidation = () => {
   const queryClient = useQueryClient();
@@ -15,14 +16,20 @@ export const usePaymentValidation = () => {
   const status = searchParams.get("status");
   const paymentId = searchParams.get("payment_id");
   const externalReference = searchParams.get("external_reference");
-  const { user, setUser } = useUserStore((state) => state);
+  const setUser = useUserStore((state) => state.setUser);
+  const user = useUserStore((state) => state.user);
   const [count, setCount] = useState(10);
   const [isPaymentValid, setIsPaymentValid] = useState(false);
 
-  const [reserved_date, setReservedDate] = useState("");
-  const [reserved_hours, setReservedHours] = useState("");
+  //const [reserved_date, setReservedDate] = useState("");
+  //const [reserved_hours, setReservedHours] = useState("");
   const [observation, setObservation] = useState("");
-  const { services } = useServiceStore((state) => state);
+  //const { services } = useServiceStore((state) => state);
+  const selectServices = useselectServiceStore((state) => state.selectServices);
+
+  const services = selectServices?.services;
+  const reserved_date = selectServices?.reserved_date as string;
+  const reserved_hours = selectServices?.reserved_hours;
 
   // 1️ Função para registrar o pagamento no backend
   const registerPayment = async () => {
@@ -114,7 +121,8 @@ export const usePaymentValidation = () => {
     try {
       if (!user?.id) return;
       console.log("Efetuando o agendamento do usuário...");
-      await api.post(`/add-agend?id=${user.id}`, {
+
+      await api.post(`/add-agend2?id=${user.id}`, {
         user_id: user.id,
         reserved_date,
         reserved_hours,

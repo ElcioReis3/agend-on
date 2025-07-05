@@ -15,6 +15,7 @@ import useUserStore from "@/stores/userStore";
 import { ServiceType } from "@/types/servicesType";
 import api from "@/services/api";
 import { useState } from "react";
+import useselectServiceStore from "@/stores/useSelectionService";
 
 type Props = {
   children: React.ReactNode;
@@ -32,7 +33,10 @@ export const DialogAppointments = ({
   onConfirm,
 }: Props) => {
   const { toast } = useToast();
-  const { user } = useUserStore((state) => state);
+  const user = useUserStore((state) => state.user);
+  const setSelectServices = useselectServiceStore(
+    (state) => state.setSelectServices
+  );
 
   const [observation, setObservation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -57,6 +61,9 @@ export const DialogAppointments = ({
         description: services.description,
       });
       window.open(response.data.url, "_blank");
+      // Salvar os dados escolhidos na store
+      setSelectServices({ services, reserved_date, reserved_hours });
+
       /* const response = await api.post("/add-agend", {
         id_user: user.id,
         reserved_date: formattedDate,
