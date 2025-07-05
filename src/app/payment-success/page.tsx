@@ -2,14 +2,11 @@
 import { Footer } from "@/components/Layout/footer";
 import { Header } from "@/components/Layout/header";
 import { usePaymentValidation } from "@/hooks/usePaymentValidation";
-import useselectServiceStore from "@/stores/useSelectionService";
 import { Check } from "lucide-react";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 
 const PaymentSuccessContent = () => {
-  const { count, user } = usePaymentValidation();
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState<string | null>(null);
+  const { count, user, loadingUser, message } = usePaymentValidation();
 
   return (
     <>
@@ -18,7 +15,7 @@ const PaymentSuccessContent = () => {
         <div className="text-xl">Obrigado, {user?.name}</div>
         <div className="text-green-400">Seu Pagamento foi Aprovado!</div>
         <Check className="text-green-400 animate-ping animate-out" />
-        {loading ? (
+        {loadingUser ? (
           <div className="mt-4">Finalizando seu agendamento, aguarde...</div>
         ) : (
           <div className="mt-4">{message}</div>

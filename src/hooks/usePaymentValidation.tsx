@@ -20,22 +20,20 @@ export const usePaymentValidation = () => {
   const user = useUserStore((state) => state.user);
   const [count, setCount] = useState(10);
   const [isPaymentValid, setIsPaymentValid] = useState(false);
-
-  //const [reserved_date, setReservedDate] = useState("");
-  //const [reserved_hours, setReservedHours] = useState("");
-  const [observation, setObservation] = useState("");
-  //const { services } = useServiceStore((state) => state);
   const selectServices = useselectServiceStore((state) => state.selectServices);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [message, setMessage] = useState<string | null>(null);
 
   const services = selectServices?.services;
   const reserved_date = selectServices?.reserved_date as string;
   const reserved_hours = selectServices?.reserved_hours;
+  const observation = selectServices?.services?.observation ?? "";
 
   // 1️ Função para registrar o pagamento no backend
   const registerPayment = async () => {
     try {
       if (!paymentId || !status) {
-        console.warn("Dados inválidos para registro de pagamento");
+        setMessage("Dados inválidos para registro de pagamento");
         router.replace("/"); // Redireciona para a home caso falte algum dado
         return;
       }
@@ -45,6 +43,7 @@ export const usePaymentValidation = () => {
         user_id: user?.id, // Certifique-se de que o user?.id não seja undefined ou null
       });
       console.log("Pagamento registrado:", response.data);
+      setMessage(`Pagamento registrado:", ${response.data}`);
     } catch (error) {
       console.warn("Erro ao registrar pagamento:", error);
       router.replace("/"); // Redireciona em caso de erro
@@ -57,6 +56,7 @@ export const usePaymentValidation = () => {
       const response = await api.put(`/payments/activate/${paymentId}`);
       toast({ description: "Agendamento efetuado." });
       handlePlan();
+      setIsPaymentValid(true);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -68,6 +68,12 @@ export const usePaymentValidation = () => {
 
   // 3️ Quando o status e os parâmetros estiverem corretos, registra o pagamento e verifica a ativação
   useEffect(() => {
+    if (user?.id) {
+      setLoadingUser(false);
+    }
+  }, [user?.id]);
+  useEffect(() => {
+    if (loadingUser) return;
     console.log("Validando pagamento:", {
       status,
       paymentId,
@@ -83,19 +89,20 @@ export const usePaymentValidation = () => {
 
     // Registrar o pagamento no backend
     registerPayment();
-  }, [status, paymentId, externalReference, user?.id]);
+  }, [status, paymentId, externalReference, user?.id, loadingUser]);
 
   // 4️ Verificar se o pagamento foi ativado corretamente e realizar ações após a confirmação
   useEffect(() => {
     if (status === "approved" && paymentId && user?.id && !isPaymentValid) {
       setTimeout(() => {
         verifyPayment(); // Verificar o pagamento no backend após um pequeno delay
-      }, 2000); // Delay de 2 segundos
+      }, 2000);
     }
-  }, [status, paymentId, isPaymentValid, user?.id]);
+  }, [status, paymentId, isPaymentValid, user?.id, loadingUser]);
 
   // 5️ Countdown antes de ativar o plano
   useEffect(() => {
+    if (loadingUser) return;
     const interval = setInterval(() => {
       setCount((prev) => Math.max(prev - 1, 0));
     }, 1000);
@@ -143,5 +150,5 @@ export const usePaymentValidation = () => {
     }
   };
 
-  return { count, user };
+  return { count, user, loadingUser, message };
 };
