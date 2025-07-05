@@ -72,9 +72,10 @@ export const usePaymentValidation = () => {
       status,
       paymentId,
       externalReference,
+      user,
     });
 
-    if (!status || !paymentId || !externalReference || status !== "approved") {
+    if (!status || !paymentId || status !== "approved") {
       console.warn("Parâmetros inválidos! Redirecionando...");
       router.replace("/"); // Redireciona se o pagamento não for válido
       return;
