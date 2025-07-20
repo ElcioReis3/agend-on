@@ -6,7 +6,7 @@ import { Check } from "lucide-react";
 import { Suspense } from "react";
 
 const PaymentSuccessContent = () => {
-  const { count, user, loadingUser, message } = usePaymentValidation();
+  const { count, user } = usePaymentValidation();
 
   return (
     <>
@@ -15,10 +15,10 @@ const PaymentSuccessContent = () => {
         <div className="text-xl">Obrigado, {user?.name}</div>
         <div className="text-green-400">Seu Pagamento foi Aprovado!</div>
         <Check className="text-green-400 animate-ping animate-out" />
-        {loadingUser ? (
+        {count !== 0 ? (
           <div className="mt-4">Finalizando seu agendamento, aguarde...</div>
         ) : (
-          <div className="mt-4">{message}</div>
+          <div className="mt-4">Aguarde um instante...</div>
         )}
         {count > 0 && (
           <div className="text-xs text-muted-foreground space-x-3 mt-7">

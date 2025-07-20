@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { UserTableAppointment } from "@/components/Users/UserTableAppointment";
 import useAppointmentStore from "@/stores/useAppointmentStore";
 import { FilterDates } from "@/components/Accordions/FilterDates";
-import { AppointmentsType } from "@/types/appointmentType";
 
 export const TableAgends = () => {
   const appointments = useAppointmentStore((state) => state.appointments);

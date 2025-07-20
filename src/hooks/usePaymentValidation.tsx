@@ -5,45 +5,38 @@ import api from "@/services/api";
 import useUserStore from "@/stores/userStore";
 import { useToast } from "./use-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import useServiceStore from "@/stores/serviceStore";
-import useselectServiceStore from "@/stores/useSelectionService";
+import useAppointmentTempStore from "@/stores/useAppointTempState";
 
 export const usePaymentValidation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const status = searchParams.get("status");
   const paymentId = searchParams.get("payment_id");
   const externalReference = searchParams.get("external_reference");
-  const setUser = useUserStore((state) => state.setUser);
-  const user = useUserStore((state) => state.user);
-  const [count, setCount] = useState(10);
-  const [isPaymentValid, setIsPaymentValid] = useState(false);
-  const selectServices = useselectServiceStore((state) => state.selectServices);
-  const [loadingUser, setLoadingUser] = useState(true);
-  const [message, setMessage] = useState<string | null>(null);
 
-  const services = selectServices?.services;
-  const reserved_date = selectServices?.reserved_date as string;
-  const reserved_hours = selectServices?.reserved_hours;
-  const observation = selectServices?.services?.observation ?? "";
+  const { user } = useUserStore((state) => state);
+  const dataAgend = useAppointmentTempStore((state) => state.dataAgend);
+  const clear = useAppointmentTempStore((state) => state.clear);
+  const [count, setCount] = useState(30);
+  const [isPaymentValid, setIsPaymentValid] = useState(false);
 
   // 1️ Função para registrar o pagamento no backend
   const registerPayment = async () => {
     try {
       if (!paymentId || !status) {
-        setMessage("Dados inválidos para registro de pagamento");
-        router.replace("/"); // Redireciona para a home caso falte algum dado
+        console.warn("Dados inválidos para registro de pagamento");
+        router.replace("/");
         return;
       }
       const response = await api.post("/payments/webhook", {
         payment_id: paymentId,
         status,
-        user_id: user?.id, // Certifique-se de que o user?.id não seja undefined ou null
+        user_id: user?.id,
       });
       console.log("Pagamento registrado:", response.data);
-      setMessage(`Pagamento registrado:", ${response.data}`);
     } catch (error) {
       console.warn("Erro ao registrar pagamento:", error);
       router.replace("/"); // Redireciona em caso de erro
@@ -53,14 +46,13 @@ export const usePaymentValidation = () => {
   // 2️ Função para verificar o pagamento no backend
   const verifyPayment = async () => {
     try {
-      const response = await api.put(`/payments/activate/${paymentId}`);
-      toast({ description: "Agendamento efetuado." });
+      await api.put(`/payments/activate/${paymentId}`);
+      toast({ description: "Pagamento efetuado com sucesso!" });
       handlePlan();
-      setIsPaymentValid(true);
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Erro ao efetuar o agendamento.",
+        title: "Erro - Pagamento existente!",
         description: "Seu pagamento é inválido.",
       });
     }
@@ -68,41 +60,26 @@ export const usePaymentValidation = () => {
 
   // 3️ Quando o status e os parâmetros estiverem corretos, registra o pagamento e verifica a ativação
   useEffect(() => {
-    if (user?.id) {
-      setLoadingUser(false);
-    }
-  }, [user?.id]);
-  useEffect(() => {
-    if (loadingUser) return;
-    console.log("Validando pagamento:", {
-      status,
-      paymentId,
-      externalReference,
-      user,
-    });
-
     if (!status || !paymentId || status !== "approved") {
       console.warn("Parâmetros inválidos! Redirecionando...");
       router.replace("/"); // Redireciona se o pagamento não for válido
       return;
     }
-
     // Registrar o pagamento no backend
     registerPayment();
-  }, [status, paymentId, externalReference, user?.id, loadingUser]);
+  }, [status, paymentId, externalReference, user?.id]);
 
   // 4️ Verificar se o pagamento foi ativado corretamente e realizar ações após a confirmação
   useEffect(() => {
     if (status === "approved" && paymentId && user?.id && !isPaymentValid) {
       setTimeout(() => {
         verifyPayment(); // Verificar o pagamento no backend após um pequeno delay
-      }, 2000);
+      }, 3000);
     }
-  }, [status, paymentId, isPaymentValid, user?.id, loadingUser]);
+  }, [status, paymentId, isPaymentValid, user?.id, dataAgend?.services]);
 
   // 5️ Countdown antes de ativar o plano
   useEffect(() => {
-    if (loadingUser) return;
     const interval = setInterval(() => {
       setCount((prev) => Math.max(prev - 1, 0));
     }, 1000);
@@ -115,40 +92,47 @@ export const usePaymentValidation = () => {
         handlePlan();
       } else {
         console.warn("Pagamento inválido! Redirecionando para home...");
-        router.replace("/"); // Redireciona se o pagamento não for válido
+        router.replace("/");
       }
     }
-  }, [count, isPaymentValid, user?.id]);
+  }, [count, isPaymentValid, user?.id, dataAgend?.services]);
 
-  // Função para ativar o agendamento
+  const convertDateToISO = (dateStr: string) => {
+    const [day, month, year] = dateStr.split("/");
+    return `${year}-${month}-${day}`;
+  };
+
+  // Função para ativar o plano
   const handlePlan = async () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 30);
-    const expirationDate = date.toISOString();
-
     try {
-      if (!user?.id) return;
-      console.log("Efetuando o agendamento do usuário...");
+      const temp = localStorage.getItem("appointment-temp");
+      if (!temp) return;
 
-      await api.post(`/add-agend2?id=${user.id}`, {
-        user_id: user.id,
-        reserved_date,
-        reserved_hours,
-        services,
-        observation,
+      const parsed = JSON.parse(temp);
+      const dataAgend = parsed?.state?.dataAgend;
+      if (!dataAgend || !user?.id) return;
+      const reserved_date_iso = convertDateToISO(dataAgend.reserved_date);
+
+      await api.post("/add-agend", {
+        id_user: user.id,
+        services: [dataAgend.services],
+        reserved_date: reserved_date_iso,
+        reserved_hours: dataAgend.reserved_hours,
+        observation: dataAgend.observation,
       });
+
       await queryClient.invalidateQueries({ queryKey: ["users"] });
-      setUser({ ...user, reserved_date: [reserved_date] });
-      toast({ description: "Agendamento efetuado com sucesso!" });
+      toast({ title: "Agendamento concluído com sucesso!" });
+      clear();
       router.replace("/"); // Redireciona para a home após sucesso
     } catch (error) {
       toast({
         variant: "destructive",
-        description: "Erro ao efetuar o agendamento.",
+        description: "Erro ao efetuar agendamento.:",
       });
       console.log(error);
     }
   };
 
-  return { count, user, loadingUser, message };
+  return { count, user };
 };

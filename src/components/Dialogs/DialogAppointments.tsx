@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Dialog,
   DialogContent,
@@ -15,7 +14,8 @@ import useUserStore from "@/stores/userStore";
 import { ServiceType } from "@/types/servicesType";
 import api from "@/services/api";
 import { useState } from "react";
-import useselectServiceStore from "@/stores/useSelectionService";
+import useAppointmentTempStore from "@/stores/useAppointTempState";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   children: React.ReactNode;
@@ -34,12 +34,12 @@ export const DialogAppointments = ({
 }: Props) => {
   const { toast } = useToast();
   const user = useUserStore((state) => state.user);
-  const setSelectServices = useselectServiceStore(
-    (state) => state.setSelectServices
-  );
-
   const [observation, setObservation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const setAppointmentTemp = useAppointmentTempStore(
+    (state) => state.setAppointmentTemp
+  );
+  const queryClient = useQueryClient();
 
   const handleConfirm = async () => {
     if (!user?.id || !reserved_date || !reserved_hours || !services) {
@@ -47,38 +47,77 @@ export const DialogAppointments = ({
       return;
     }
 
-    const [day, month, year] = reserved_date.split("/");
-    const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
-      2,
-      "0"
-    )}`;
-
     try {
-      const response = await api.post("/checkout", {
-        title: services.title,
-        quantity: 1,
-        price: services.price,
-        description: services.description,
-      });
-      window.open(response.data.url, "_blank");
-      // Salvar os dados escolhidos na store
-      setSelectServices({ services, reserved_date, reserved_hours });
-
-      /* const response = await api.post("/add-agend", {
-        id_user: user.id,
-        reserved_date: formattedDate,
+      setAppointmentTemp({
+        reserved_date,
         reserved_hours: [reserved_hours],
-        services: [services],
+        services,
         observation,
       });
 
-      if (response.status === 200) {
-        toast({ title: "Agendamento concluído com sucesso!" });
-        setIsOpen(false);
-        onConfirm && onConfirm();
-      } */
+      handlePayment(services.title, services.price, [services.description]);
     } catch (error) {
       toast({ title: "Erro ao realizar o agendamento." });
+    }
+  };
+
+  const handlePayment = async (
+    title: string,
+    price: number,
+    desc: string[]
+  ) => {
+    if (user?.role === "ADMIN") {
+      toast({
+        variant: "destructive",
+        autoFocus: true,
+        title: "Você é um administrador!!!",
+        description: "As assinaturas só são válidas para usuários comuns.",
+      });
+      return;
+    }
+    if (!user) {
+      toast({
+        variant: "destructive",
+        autoFocus: true,
+        title: "Faça o login!!!",
+        description: "É necessário que acesse com email e senha.",
+      });
+      //router.replace("/auth/signin");
+      return;
+    }
+
+    try {
+      const description = desc.join(",");
+
+      // Primeira requisição: POST para criar o checkout
+      let response;
+      try {
+        response = await api.post("/checkout", {
+          title,
+          quantity: 1,
+          description,
+          price,
+        });
+      } catch (error) {
+        console.error("Erro ao criar o checkout:", error);
+        toast({
+          title: "Erro ao tentar processar o pagamento. Tente novamente.",
+        });
+        return;
+      }
+
+      if (response?.data?.url) {
+        window.open(response.data.url, "_blank");
+      } else {
+        console.error("A URL do checkout não foi retornada.");
+        toast({ title: "Erro ao tentar redirecionar para o pagamento." });
+      }
+    } catch (error) {
+      console.error("Erro ao processar pagamento:", error);
+      toast({
+        title:
+          "Ocorreu um erro ao tentar processar o pagamento. Tente novamente mais tarde.",
+      });
     }
   };
 
@@ -109,10 +148,11 @@ export const DialogAppointments = ({
             value={observation}
             onChange={(e) => setObservation(e.target.value)}
           />
-
-          <Button className="mt-2" onClick={handleConfirm}>
-            Confirmar Agendamento
-          </Button>
+          {services && (
+            <Button className="mt-2" onClick={handleConfirm}>
+              Confirmar Agendamento
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>

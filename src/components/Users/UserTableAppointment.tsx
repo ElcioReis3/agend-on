@@ -32,18 +32,18 @@ export const UserTableAppointment = ({ appointments, userBtn }: Props) => {
     <Table className="text-sm border-collapse">
       <TableCaption>
         <div>Lista completa de Agendamentos.</div>
-        <div className="w-max flex gap-1 m-auto">
-          <span className="w-min flex items-center px-2 bg-green-400 rounded-md text-xs justify-center">
+        <div className="w-max flex gap-1 m-auto text-black">
+          <span className="w-min flex items-center px-2 bg-green-500 rounded-md text-xs justify-center">
             <Check />
             Atentido
           </span>
-          <span className="w-min flex items-center px-2 bg-green-400 rounded-md text-xs justify-center">
+          <span className="w-min flex items-center px-2 bg-green-500 rounded-md text-xs justify-center">
             <CalendarSync /> Reagendado
           </span>
-          <span className="w-min flex items-center px-2 bg-gray-400 rounded-md text-xs justify-center">
+          <span className="w-min flex items-center px-2 bg-gray-500 rounded-md text-xs justify-center">
             <CalendarClock /> Reservado
           </span>
-          <span className="w-min flex items-center px-2 bg-red-400 rounded-md text-xs justify-center">
+          <span className="w-min flex items-center px-2 bg-red-500 rounded-md text-xs justify-center">
             <X />
             Cancelado
           </span>
